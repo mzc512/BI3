@@ -1,0 +1,105 @@
+<html>
+    <head>
+		<meta charset="utf-8">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>活跃用户</title>
+		<link rel="stylesheet" href="/anaweb/css/bootstrap.min.css">
+		<link href="/anaweb/js/bootstrap/years/bootstrap-datetimepicker.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="/anaweb/css/base.css">
+        <link rel="stylesheet" href="/anaweb/css/daterangepicker.css">
+		<link rel="stylesheet" href="/anaweb/css/bootstrap-table/v1.11.0/bootstrap-table.css">
+		<link rel="stylesheet" href="/anaweb/css/datebase.css">
+
+		<link rel="stylesheet" href="/anaweb/css/report.css">
+		<script src="/anaweb/js/jquery/v1.9.1/jquery.min.js" type="text/javascript"></script>
+		<script src="/anaweb/js/bootstrap/v3.3.5/bootstrap.min.js" type="text/javascript"></script>
+
+		<script src="/anaweb/js/bootstrap/years/js/bootstrap.min.js" type="text/javascript"></script>
+		<script src="/anaweb/js/bootstrap/years/bootstrap-datetimepicker.js" type="text/javascript"></script>
+		<script src="/anaweb/js/bootstrap/years/locales/bootstrap-datetimepicker.fr.js" type="text/javascript"></script>
+
+		<script src="/anaweb/js/moment/v2.13.0/moment.min.js" type="text/javascript"></script>
+		<script src="/anaweb/js/daterangepicker/2.1.20/daterangepicker.js" type="text/javascript"></script>
+		<script src="/anaweb/js/bootstrap-table/v1.11.0/bootstrap-table.js" type="text/javascript"></script>
+		<script src="/anaweb/js/echarts/v3.1.10/echarts.min.js" type="text/javascript"></script>
+		<script src="/anaweb/js/chartTool.js" type="text/javascript"></script>
+    </head>
+    <body >
+		<div id="toobar">
+			<div class="login-num" style="float: right; height: 46px; margin-right: 360px">
+				<span style="display:inline-block; height: 46px; line-height: 46px; vertical-align: middle">登录次数</span>
+					<select style="height: 36px; background-color:#eee;border: 1px solid #ccc; padding-left: 5px"
+							id="cmpoperator" name="cmpoperator">
+						<option value=">">大于</option>
+						<option value="=">等于</option>
+						<option value="<">小于</option>
+					</select>
+				<input type="text"  style="width: 40px; height: 36px;background-color:#eee; border: 1px solid #ccc; padding-left: 8px"
+					   name="logincnt" id="logincnt" class="" placeholder="" value="1"/>
+			</div>
+			<div class="date-control" style="float: right; height: 46px;">
+				<span class="daterange">选择日期范围</span>
+				<div class="datebar">
+					<div class="control-group">
+						<div class="controls">
+							<div class="input-prepend input-group">
+								<span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+								<input type="text" readonly style="width: 200px" name="datepicker" id="datepicker" class="form-control" value="2016-5-13 - 2016-6-14"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="toobar1" class="toobars" style="display: none;">
+			<div class="login-num" style="float: right; height: 46px; margin-right: 400px">
+			<span style="display:inline-block; height: 46px; line-height: 46px; vertical-align: middle">登录次数</span>
+			<select style="height: 36px; background-color:#eee;border: 1px solid #ccc; padding-left: 5px"
+					id="cmpoperators" name="cmpoperator">
+				<option value=">">大于</option>
+				<option value="=">等于</option>
+				<option value="<">小于</option>
+			</select>
+			<input type="text"  style="width: 40px; height: 36px;background-color:#eee; border: 1px solid #ccc; padding-left: 8px"
+				   name="logincnt" id="logincnts" class="" placeholder="" value="1"/>
+		</div>
+			<div class="date-control" style="float: right; height: 46px; margin-right: -500px">
+				<span class="daterange datetimes" style="top:15px;right:310px;">选择日期范围</span>
+				<div class="control-group" style="float:right;margin-top:5px;margin-right:-50px;">
+					<div class="controls input-append date form_datetime" data-date="2014-01" data-date-format="yyyy-mm" data-link-field="dtp_input1">
+						<input id="datas" size="12" type="text" value="" width="100"  height="200"  class="form-control newcontrl"  readonly >
+						<span class="add-on"><i class="icon-remove"></i></span>
+						<span class="add-on"><i class="icon-th"></i></span>
+					</div>
+					<input type="hidden" id="dtp_input1" value="" /><br/>
+				</div>
+				<div style="float:right; width: 30px;;margin-top:15px;">至</div>
+				<div class="control-group" style="float:right;margin-top:5px;margin-right:5px;">
+					<div class="controls input-append date form_datetimes" data-date="2014-01" data-date-format="yyyy-mm" data-link-field="dtp_input2">
+						<input id="dataes" size="13" type="text" value="" width="100"  height="200"  class="form-control newcontrl"  readonly >
+						<span class="add-on"><i class="icon-remove"></i></span>
+						<span class="add-on"><i class="icon-th"></i></span>
+					</div>
+					<input type="hidden" id="dtp_input2" value="" /><br/>
+				</div>
+			</div>
+		</div>
+		<div class="echartsBox"></div>
+		<script type="text/javascript">
+			var datetimes1=new Date();
+			var nomnu=datetimes1.getMonth()+1;
+			if(nomnu<10){
+				nomnu='0'+nomnu;
+			}
+			var dates1=datetimes1.getFullYear().toString()+'-'+nomnu.toString();
+			var dates2=datetimes1.getFullYear().toString()+'-01';
+			$("#datas").val(dates1);$("#dataes").val(dates2);
+		</script>
+
+		<script type="text/javascript" src="/anaweb/js/user_active.js">
+        </script>
+    </body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "dashboard":{
+      "tabDisplay":{
+        "ybp":{"display":true},
+        "liuliang":{"display":true},
+        "accesspath":{"display":true},
+        "latestBoard":{"display":true}
+      }
+  }
+}

@@ -1,0 +1,8 @@
+运行环境安装
+
+1 安装node 6.0以上版本;
+2 安装npm;
+3 安装pm2;
+4 安装项目模块，运行npm_install.sh;
+5 运行程序：pm2 start anaweb.js --name="anaweb"。
+6 查看日志：pm2 logs "anaweb"

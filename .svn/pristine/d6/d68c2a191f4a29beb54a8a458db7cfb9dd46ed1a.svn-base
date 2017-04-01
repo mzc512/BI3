@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BI系统</title>
+    <link rel="stylesheet" href="/anaweb/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/anaweb/css/jscrollpane/jquery.jscrollpane.css"/>
+    <link rel="stylesheet" type="text/css" href="/anaweb/css/bistyle.css"/>
+    <!--<link rel="stylesheet" href="/anaweb/css/Font-Awesome/3.2.1/css/font-awesome.min.css">-->
+    <script type="text/javascript" src="/anaweb/js/jquery/v1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/anaweb/js/jscrollpane/jquery.mousewheel.min.js"></script>
+    <script type="text/javascript" src="/anaweb/js/jscrollpane/jquery.jscrollpane.leftmenu.min.js"></script>
+    <script type="text/javascript" src="/anaweb/js/biindex.js"></script>
+</head>
+
+<body>
+<!--<input id="btntext" type="button" value="添加文本组件" data-toggle="modal" data-target="#myModal"  href="../SysManage/ZuJianManage.aspx"/>-->
+<!-- Modal -->
+<div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+     style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    修改密码
+                </h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr>
+                        <th style="text-align:right">原密码:</th>
+                        <td style="padding:5px 10px;"><input type="password" name="oldpassword" class="form-control"
+                                                             maxlength="50" value=""/></td>
+                    </tr>
+                    <tr>
+                        <th style="text-align:right">新密码:</th>
+                        <td style="padding:5px 10px;"><input type="password" name="password" class="form-control"
+                                                             maxlength="100" value=""/></td>
+                    </tr>
+                </table>
+                <div class="message" style="color:red;"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary">
+                    提交
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="nav-top">
+    <span class="system-name"></span>
+    <div class="nav-topright">
+        <div class="triangle_border">
+            <i></i>
+            <div class="popup">
+                <!--<span><em></em></span>-->
+                <ul class="dropdown-menu-header">
+                    <li><a href="#" id="domidifypwd">修改密码</a></li>
+                    <li><a href="/loginout">退出</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="top-tab">
+       <!-- <span class="bi-nav"><a href="javascript:void(0);" data-src="/anaweb/ybp.html"
+                                 class="active">仪表盘</a></span>
+        <span class="bi-nav"><a href="javascript:void(0);" data-src="/anaweb/analysis-report.html"
+                                         >分析报告</a></span>
+        <span class="bi-nav"><a href="javascript:void(0);" data-src="/anaweb/selfAnalysis.html"
+                                              >自助分析</a></span>-->
+    </div>
+</div>
+
+<div class="main">
+    <iframe src="" frameborder="0" scrolling="auto" name="iframepage" id="mainIframe"
+            style="width: 100%;height: 100%; overflow: hidden;"></iframe>
+</div>
+</body>
+</html>

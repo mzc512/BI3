@@ -1,0 +1,73 @@
+/***
+ * redis.js
+ */
+var express = require('express');
+var redis = require('redis');
+var poolModule = require('generic-pool');
+
+//redis配置
+var config = require('./configuration.json');
+
+var pool = poolModule.Pool({
+	name: 'redis',
+	create: (callback) => {
+		console.log("redis creates connection.");
+		var client = redis.createClient(config.redis);
+		client.on('error', (err) => {
+			console.error("redis error is emitted: %s", err.code);
+			console.error(err);
+			callback(err, client);
+		});
+
+		client.on('connect', () => {
+			console.log("redis is connected: connection_id=%s.", client.connection_id);
+			callback(null, client);
+		});
+
+		client.on('end', (err) => {
+			console.log("redis connection is closed: connection_id=%s.", client.connection_id);
+		});
+	},
+	destroy: (client) => {
+		console.log("redis destroys connection.");
+		client.quit();
+	},
+	max: 10,
+	min: 2,
+	idleTimeoutMillis: 30000,
+	log: false
+});
+
+
+exports.get = (req, res, srvId, key, callback) => {
+
+	pool.acquire((err, client) => {
+		do {
+			if (err) {
+				console.log("%s00000##redis pool acquire error: %s.", srvId, err.code);
+				console.error(err);
+				response.status(500).send(srvId + "02001##获取数据库连接失败");
+				break;
+			}
+
+			console.log("%s#00000##redis connection acquired: connection_id=%s", srvId, client.connection_id);
+
+			client.get(key, (err, data) => {
+				do {
+					if (err) {
+						console.error("%s00000##redis error is emitted -- ", srvId);
+						console.error(err);
+						response.status(500).send(srvId + "02003##查询数据库失败");
+						break;
+					}
+
+					callback(data);
+				} while (false);
+			});
+		} while (false);
+
+		pool.release(client);
+	});
+
+};
+

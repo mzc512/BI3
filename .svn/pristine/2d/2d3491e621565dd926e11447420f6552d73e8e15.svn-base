@@ -1,0 +1,12 @@
+@charset "utf-8";
+/* CSS Document */
+h2.accesspath_title{margin:4px 20px; color:#007bc4; text-decoration:none;outline: none;padding-top:15px; padding-left:20px; padding-bottom:10px; border-bottom:1px solid #d3d3d3; font-size:18px; }
+#accesspath{ width:96%; height:450px; margin:30px auto 10px auto; position:relative; border:1px #d3d3d3 solid; background-color:#fff; overflow:hidden;}
+#accesspath ul{  width:98%;position:absolute; margin:10px; top:0; left:0; padding:0;}
+#accesspath ul li{ width:100%;  border-bottom:1px #ccc dotted; overflow:hidden; }
+#accesspath ul li a.face{ float:left; width:50px; height:50px; margin-top:2px; padding:2px;}
+#accesspath ul li h4{line-height:16px; margin-left:10px;color: #007bc4;}
+#accesspath ul li h4 em{font-size:14px; margin-right:10px;color:#333333;}
+#accesspath ul li h4 span{margin-right:10px;}
+#accesspath ul li p{ margin-left:10px;}
+

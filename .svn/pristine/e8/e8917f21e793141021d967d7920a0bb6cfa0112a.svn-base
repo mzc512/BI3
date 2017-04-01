@@ -1,0 +1,729 @@
+/*订单类型统计*/
+document.write(" <script language=\"javascript\" src=\"\/anaweb\/js\/jquery\/jquerysession.js \" > <\/script>");
+var echartsBox = $('.echartsBox');
+$('#toobar').show();
+echartsBox.append(
+    '<div>' +
+    '<div class="well distall">' +
+    '<form class="form-horizontal">' +
+    '<fieldset>' +
+    '<div class="control-group">' +
+    '<div class="controls">' +
+    '<div class="input-prepend input-group">' +
+    '<div class="distdvone">' +
+    '指标：<select class="distselect" id="dist_dl"></select>' +
+    '</div>'+
+    '<div class="distdvtwo">' +
+    '维度：<select class="distselect" id="dist_wd"></select>' +
+    '</div>' +
+    '<div class="distthere">次要维度：'+
+    '<select class="distselect" id="dist_cywd">'+
+    '</select>'+
+    '</div>'+
+    '<div  style="float:left;  margin-left: 20px;margin-top: 20px; font-size: 14px;  color:#555; height: 34px;line-height: 34px;;">'+
+    '<button type="button" class="btn btn-primary" id="order_seledatadistbtn">搜索</button>'+
+    '</div>'+
+    '</div>' +
+    '</div>' +
+    '</div>' +
+    '</fieldset>' +
+    '</form>' +
+    '</div>' +
+    '<div id="distecharts" style="margin: 20px; height:350px;">' +
+    '</div>' +
+    '<div style="margin-left: 65px;" id="showhide"><img id="tbales" src="/anaweb/images/menu/1_03.jpg"><button style="float:right;margin-right: 65px;">返回</button></div>'+
+    '<div style="margin: 60px;" id="searchdivtable">' +
+    '</div>' +
+    '</div>'
+);
+
+var distecharts = echarts.init(document.getElementById('distecharts'));
+var startDateSel=(moment(Date.now()).subtract(1, 'd')).format('YYYY-01-01');
+var endDateSel=(moment(Date.now()).subtract(1, 'd')).format('YYYY-MM-DD');
+
+$("#tbales").click(function () {
+
+    $("#searchdivtable").slideToggle(function(){
+        $("#tbales")[0].src==window.location.protocol+'//'+window.location.host+"/anaweb/images/menu/1_04.png"?$("#tbales").attr("src","/anaweb/images/menu/1_03.jpg"):$("#tbales").attr("src","/anaweb/images/menu/1_04.png");
+    });
+
+    $('html,body').animate({scrollTop: 500}, 500);
+});
+
+$("#showhide button:last").click(function () {
+    doatvae('','up');
+});
+var option = {
+    title: {
+        text: '产品多维分析',
+        x: 'center',
+        align: 'right'
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            animation: false
+        },
+        formatter:'{b}<br>发布数:{c0}'
+    },
+    toolbox: {
+        show: true,
+        feature: {
+            mark: {
+                show: true
+            },
+            dataView: {
+                show: true,
+                readOnly: false
+            },
+            magicType: {
+                show: true,
+                type: ['line', 'bar']
+            },
+            restore: {
+                show: true
+            },
+            saveAsImage: {
+                show: true
+            }
+        }
+    },
+    xAxis: [
+        {
+            type: 'category',
+            data: []
+        }
+    ],
+    yAxis: [
+        {
+            name: 'asdfasdf',
+            type: 'value'
+        }
+    ],
+    series: [
+        {
+            name: '',
+            type:'bar',
+            barWidth :'auto',
+            lineStyle: {
+                normal: {}
+            },
+            itemStyle: {
+                normal: {
+                    label: {
+                        show: false
+                    }
+                }
+            },
+            data: []
+        }
+    ]
+};
+
+/*点击搜索调用方法*/
+function order_dataurlstatis(startdatas,endDates,distdls,distwds,distcywds,inits){
+    var startDate=startdatas;
+    var endDate  =endDates;
+    var distdl   =distdls;
+    var distwd   =distwds;
+    var distcywd =distcywds;
+   // console.log(startDate+'==='+endDate+'==='+distdl+'==='+distwd+'==='+distcywd);
+    $('#searchdivtable').empty(); 
+    $('#searchdivtable').append(
+        '<table id="searchTable"' +
+        'data-toggle="table"' +
+        'data-search="true"' +
+            //'data-show-refresh="true"' +
+        'data-show-columns="true"' +
+        'data-pagination="true"' +
+        'data-page-size="10"' +
+        'data-page-list="[10,50,100]"' +
+        'data-page-list="[]"' +
+        'data-height="470"' +
+        '></table>');
+
+
+
+    $.get("/productTypeList/method/product/dim/datalist/startDate/" + startDate + "/endDate/" + endDate+"/distdl/"+distdl+"/distwd/"+distwd+"/distcywd/"+distcywd+"/inits/"+inits, function (data, status) {
+        if(data.result) {
+            if ($("#dist_wd option:selected").val() != "全部" && $("#dist_cywd option:selected").val() != "全部") {
+
+                $('#searchTable').empty().append(
+                    '<thead>' +
+                    '<tr>' +
+                    '<th data-field="dim1_nm" data-sortable="true" class="dim3ID" >主要维度</th>' +
+                    '<th data-field="dim1" data-sortable="true" data-visible="false" >主要维度ID</th>' +
+                    '<th data-field="dim2_nm" data-sortable="true" class="dim2ID">次要维度</th>' +
+                    '<th data-field="dim2" data-sortable="true" data-visible="false" >次要维度ID</th>' +
+                    '<th data-field="amt" data-sortable="true" >指标</th>' +
+                    '</tr>' +
+                    '</thead>'
+                )
+                $('#searchTable').bootstrapTable({
+                    data: data.data,
+                    showExport: true,                     //是否显示导出
+                    exportDataType: "all"              //basic', 'all', 'selected
+
+                });
+                $('#distecharts').hide(); $('#tbales').hide(); $('#searchdivtable').show();
+            } else if ($("#dist_wd option:selected").val() != "全部" || $("#dist_cywd option:selected").val() != "全部") {
+                var title1 = $("#dist_dl").find("option:selected").attr("data-dimcode");
+                var title2 = $("#dist_wd").find("option:selected").attr("data-dimcode");
+               if(title1=='D_I02'&& title2=='D_D01')
+               {   //在选择销售情况和类目1 显示
+                   $('#searchTable').empty().append(
+                       '<thead>' +
+                       '<tr>' +
+                       '<th data-field="dim1_nm" data-sortable="true">维度</th>' +
+                       '<th data-field="amt" data-sortable="true">金额</th>' +
+                       '<th data-field="amtNm" data-sortable="true">单数</th>' +
+                       '</tr>' +
+                       '</thead>'
+                   );
+                   var dldata = [];
+                   var dltime = [];
+                   var dltimb = [];
+                   for (var i = 0; i < data.data.length; i++) {
+                       dldata[i] = data.data[i].amt;
+                       dltime[i] = data.data[i].dim1_nm;
+                       dltimb[i] = data.data[i].amtNm;
+                   }
+               }else{
+                   $('#searchTable').empty().append(
+                       '<thead>' +
+                       '<tr data-field="dim1">' +
+                       '<th data-field="dim1_nm" data-sortable="true" data-lis="dim1" class="dim1ID">维度</th>' +
+                       '<th data-field="dim1" data-sortable="true" data-visible="false" >ID</th>' +
+                       '<th data-field="amt" data-sortable="true">指标</th>' +
+                       '</tr>' +
+                       '</thead>'
+                   );
+               }
+
+
+                $('#searchTable').bootstrapTable({
+                    data: data.data,
+                    showExport: true,                     //是否显示导出
+                    exportDataType: "all"
+                });
+                var dldata = [];
+                var dltime = [];
+                for (var i = 0; i < data.data.length; i++) {
+                    dldata[i] = data.data[i].amt;
+                    dltime[i] = data.data[i].dim1_nm;
+                }
+                option.series[0].data = dldata;
+                option.yAxis[0].name = "指标";
+                option.series[0].type = "bar";
+                option.xAxis[0].data = dltime;
+                if (dltime.length > 10) {
+                    option.xAxis[0].axisLabel = {interval: 0, rotate: -30};
+                } else {
+                    option.xAxis[0].axisLabel = {interval: 'auto', rotate: 0};
+                }
+                distecharts.setOption(option);
+                distecharts.off('click');
+                distecharts.dispatchAction({
+                    type: 'restore'
+                });
+                distecharts.on('click', function (params) {
+                    if(title1=='D_I02'&& title2=='D_D01')
+                    {   //在选择销售情况和类目1 显示点击效果
+                        var times1 =params.name;
+                        var reg = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
+                        var aa=reg.test(times1);
+                        if(aa){
+                            var img2=$("#tbales")[0].src;
+                            var  parm= {startDate:startDate,endDate:endDate,distdl:distdl,distwd:distwd,distcywd:distcywd,img1:img2,inits:times1};
+                            doatvae(parm ,'downm');
+                        }
+                    }
+                })
+                distecharts.dispatchAction({
+                    type: 'restore'
+                });
+                $('#distecharts').show(); $('#tbales').show();
+
+            } else {
+
+              var title1 = $("#dist_dl").find("option:selected").attr("data-dimcode");
+              var title2 = $("#dist_wd").find("option:selected").attr("data-dimcode");
+             if(title1=='D_I02'){  //在选择销售情况 显示
+                 $('#searchTable').empty().append(
+                     '<thead>' +
+                     '<tr>' +
+                     '<th data-field="dim1_nm" data-sortable="true">维度</th>' +
+                     '<th data-field="amt" data-sortable="true">金额</th>' +
+                     '<th data-field="amtNm" data-sortable="true">单数</th>' +
+                     '</tr>' +
+                     '</thead>'
+                 );
+                 var dldata = [];
+                 var dltime = [];
+                 var dltimb = [];
+                 for (var i = 0; i < data.data.length; i++) {
+                     dldata[i] = data.data[i].amt;
+                     dltime[i] = data.data[i].dim1_nm;
+                     dltimb[i] = data.data[i].amtNm;
+                 }
+             }else{
+                 $('#searchTable').empty().append(
+                     '<thead>' +
+                     '<tr>' +
+                     '<th data-field="dim1_nm" data-sortable="true">时间</th>' +
+                     '<th data-field="amt" data-sortable="true">指标</th>' +
+                     '</tr>' +
+                     '</thead>'
+                 );
+                 var dldata = [];
+                 var dltime = [];
+                 for (var i = 0; i < data.data.length; i++) {
+                     dldata[i] = data.data[i].amt;
+                     dltime[i] = data.data[i].dim1_nm;
+                 }
+             }
+
+
+                $('#searchTable').bootstrapTable({
+                    data: data.data,
+                    showExport: true,                     //是否显示导出
+                    exportDataType: "all"
+                });
+
+                option.series[0].data = dldata;
+                option.yAxis[0].name = "指标";
+                option.xAxis[0].data = dltime;
+
+                option.series[0].barWidth =dltime.length<5 ? '100px':'auto',
+                option.xAxis[0].axisLabel = {interval: 'auto', rotate: 0};
+                distecharts.setOption(option); $('#tbales').show();
+                distecharts.off('click');
+                distecharts.dispatchAction({
+                    type: 'restore'
+                });
+                distecharts.on('click', function (params) {
+                    if($("#dist_wd option:selected").val()== "全部" && $("#dist_cywd option:selected").val()== "全部"){
+                       var times1 =params.name;
+                        if(times1.length==7){
+                            var img2=$("#tbales")[0].src;
+                            var  parm= {startDate:times1,endDate:times1,distdl:distdl,distwd:distwd,distcywd:distcywd,img1:img2};
+                            doatvae(parm ,'downm');
+                        }
+
+                        var reg = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
+                          var aa=reg.test(times1);
+                        if(aa){   //在选择销售情况 显示点击
+                            var img2=$("#tbales")[0].src;
+                            var  parm= {startDate:startDate,endDate:endDate,distdl:distdl,distwd:distwd,distcywd:distcywd,img1:img2,inits:times1};
+                            doatvae(parm ,'downm');
+                        }
+
+                    }
+
+                });
+                $('#distecharts').show();
+            }
+
+            $('#searchTable').on('click-cell.bs.table', function (e,field, value, row, $element) {
+                var len =0;
+                for(item in row){
+                    len++;
+                }
+                if(len==5){  //如果是5个属性的
+                    if($element.hasClass("dim3ID")){
+                        var dim1 = row.dim1;
+                        var dim2 = "ALL"
+                        var clk3 = "clk3";
+                        var img2=$("#tbales")[0].src;
+                        var  parm= {startDate:startDate,endDate:endDate,endDate:endDate,distdl:distdl,distwd:distwd,distcywd:distcywd,dim1:dim1,dim2:dim2,clinum:clk3,img1:img2};
+                        doatvae(parm ,'downm');
+                       // order_click_dataall(startDate, endDate, endDate, distdl, distwd, distcywd, dim1, dim2, clk3);
+                    }else if($element.hasClass("dim2ID")){
+                        var dim2 = row.dim2;
+                        var dim1 = row.dim1;
+                        var clk2 = "clk2";
+                        var img2=$("#tbales")[0].src;
+                        var  parm= {startDate:startDate,endDate:endDate,endDate:endDate,distdl:distdl,distwd:distwd,distcywd:distcywd,dim1:dim1,dim2:dim2,clinum:clk2,img1:img2};
+                        doatvae(parm ,'downm');
+                       // order_click_dataall(startDate, endDate, endDate, distdl, distwd, distcywd, dim1, dim2, clk2);
+                    }
+
+                }else if(len ==3){ //如果是3个属性的
+                    if($element.hasClass("dim1ID")) {
+                        var dim1 = row.dim1;
+                        var dim2 = row.dim1;
+                        var clk1 = "clk1";
+                        if (distwd == "D_D00") {
+                            dim1 = "ALL";
+                        } else if (distcywd == "D_D00") {
+                            dim2 = "ALL";
+                        }
+                        var img2=$("#tbales")[0].src;
+                        var  parm= {startDate:startDate,endDate:endDate,endDate:endDate,distdl:distdl,distwd:distwd,distcywd:distcywd,dim1:dim1,dim2:dim2,clinum:clk1,img1:img2};
+                        doatvae(parm ,'downm');
+                        //order_click_dataall(startDate, endDate, endDate, distdl, distwd, distcywd, dim1, dim2, clk1);
+                    }
+                }
+
+            });
+
+        }else{
+            if(data.message='NoSession'){
+                location.href=data.data.redirect;
+            }
+        }
+    });
+}
+
+/*点击ID调用方法*/
+function order_click_dataall(startDate,endDate,endDate,distdl,distwd,distcywd,dim1,dim2,clinum){
+    $('#searchdivtable').empty();
+    $('#searchdivtable').append(
+        '<table id="searchTable"' +
+        'data-toggle="table"' +
+        'data-search="true"' +
+            //'data-show-refresh="true"' +
+        'data-show-columns="true"' +
+        'data-pagination="true"' +
+        'data-page-size="10"' +
+        'data-page-list="[10,50,100]"' +
+        'data-page-list="[]"' +
+        'data-height="470"' +
+        '></table>');
+
+    $.get("/productTypeList/method/product/dim/clickdata/startDate/" + startDate + "/endDate/" + endDate+"/distdl/"+distdl+"/distwd/"+distwd+"/distcywd/"+distcywd+"/val1/"+dim1+"/val2/"+dim2, function (data, status) {
+        if(data.result){
+            if(clinum=="clk1"){
+                $('#searchTable').append(
+                    '<thead>' +
+                    '<tr>'+
+                    '<th data-field="stat_dt" data-sortable="true">日期</th>' +
+                    '<th data-field="dim1_nm" data-sortable="true">维度</th>' +
+                    '<th data-field="dim1" data-sortable="true" data-visible="false">ID</th>' +
+                    '<th data-field="amt" data-sortable="true" class="dim4ID">指标</th>' +
+                    '</tr>' +
+                    '</thead>'
+                )
+
+                $('#searchTable').bootstrapTable({
+                    data:data.data,
+                    showExport: true,                     //是否显示导出
+                    exportDataType: "all"
+                });
+
+                var dldata=[];
+                var dltime=[];
+                for(var i=0;i<data.data.length;i++)
+                {
+                    dldata[i]= data.data[i].amt;
+                    dltime[i]= data.data[i].stat_dt;
+                }
+                option.series[0].data=dldata;
+                option.yAxis[0].name="指标";
+                option.series[0].type="line";
+                option.xAxis[0].data=dltime;
+                distecharts.setOption(option);
+                distecharts.dispatchAction({
+                    type: 'restore'
+                });
+                $('#distecharts').show();
+            }else if(clinum=="clk2")
+            {
+                $('#searchTable').append(
+                    '<thead>' +
+                    '<tr>'+
+                    '<th data-field="stat_dt" data-sortable="true">日期</th>' +
+                    '<th data-field="dim1_nm" data-sortable="true" >主要维度</th>' +
+                    '<th data-field="dim2_nm" data-sortable="true" >次要维度</th>' +
+                    '<th data-field="amt" data-sortable="true" >指标</th>' +
+                    '<th data-field="dim1" data-sortable="true" data-visible="false">主要维度ID</th>' +
+                    '<th data-field="dim2" data-sortable="true" data-visible="false">次要维度ID</th>' +
+                    '</tr>' +
+                    '</thead>'
+                )
+                $('#searchTable').bootstrapTable({
+                    data:data.data,
+                    showExport: true,                     //是否显示导出
+                    exportDataType: "all"
+                });
+                var dldata=[];
+                var dltime=[];
+                for(var i=0;i<data.data.length;i++)
+                {
+                    dldata[i]= data.data[i].amt;
+                    dltime[i]= data.data[i].stat_dt;
+                }
+                option.series[0].data=dldata;
+                option.series[0].type="line";
+                option.yAxis[0].name="指标";
+                option.xAxis[0].data=dltime;
+                distecharts.setOption(option);
+                distecharts.dispatchAction({
+                    type: 'restore'
+                });
+                $('#distecharts').show();
+            }else if(clinum=="clk3"){
+                $('#searchTable').append(
+                    '<thead>' +
+                    '<tr>'+
+                    '<th data-field="dim1_nm" data-sortable="true">主要维度</th>' +
+                    '<th data-field="dim2_nm" data-sortable="true" >次要维度</th>' +
+                    '<th data-field="amt" data-sortable="true" >指标</th>' +
+                    '<th data-field="dim1" data-sortable="true" data-visible="false">主要维度ID</th>' +
+                    '<th data-field="dim2" data-sortable="true" data-visible="false">次要维度ID</th>' +
+                    '</tr>' +
+                    '</thead>'
+                )
+                $('#searchTable').bootstrapTable({
+                    data:data.data,
+                    showExport: true,                     //是否显示导出
+                    exportDataType: "all"
+                });
+                $('#distecharts').hide();
+            }
+        }else{
+            if(data.message='NoSession'){
+                location.href=data.data.redirect;
+            }
+        }
+    });
+
+}
+
+
+
+
+function doatvae(parm ,types){
+
+    if(types=='downm'){
+        if(!window["stack"]){
+            window["stack"]=[];
+        }
+        if(window["stack"].length==0){
+            window["stack"].push({level:1,params:parm})
+        }else{
+            var newLeavel = window["stack"][window["stack"].length-1]['level']+1;
+            window["stack"].push({level:newLeavel,params:parm})
+        }
+        if(window["stack"].length>1){$("#showhide button:first").show();}
+        if(parm['distdl']=='D_I02'){$(".distthere").hide();}else{
+            $(".distthere").show();
+        }
+        if(parm['dim1']){
+            order_click_dataall(parm['startDate'],parm['endDate'],parm['endDate'],parm['distdl'],parm['distwd'],parm['distcywd'],parm['dim1'],parm['dim2'],parm['clinum']);
+            //startDate,endDate,endDate,distdl,distwd,distcywd,dim1,dim2,clinum
+        }else{
+            if(parm['inits']){
+                order_dataurlstatis(parm['startDate'],parm['endDate'],parm['distdl'],parm['distwd'],parm['distcywd'],parm['inits']);
+            }else{
+                order_dataurlstatis(parm['startDate'],parm['endDate'],parm['distdl'],parm['distwd'],parm['distcywd'],0);
+            }
+        }
+
+    }else{   window["stack"].pop();
+        //  var arr={'D_D00':'全部','D_D01':'类目1','D_D02':'类目2'};
+        if(window["stack"].length>0) {
+            if(window["stack"].length>1) {
+          $("#showhide button:first").show();}
+
+            if(window["stack"][window["stack"].length - 1]['params']['dim1']){
+                var parm = window["stack"][window["stack"].length - 1]['params'];
+
+                if(parm['distdl']=='D_I02'){$(".distthere").hide();}else{
+                    $(".distthere").show();
+                }
+                $("#tbales").attr("src",parm['img1']);
+                if(parm['img1']==window.location.protocol+'//'+window.location.host+"/anaweb/images/menu/1_04.png"){
+                    $("#searchdivtable").hide(); $('#tables1').hide();$('#tables').show();
+                }else{
+                    $("#searchdivtable").show();$('#tables1').show();$('#tables').hide();
+                }
+
+                var arr =$.session.get(parm['distwd']);
+                var arrs =$.session.get(parm['distcywd']);
+
+                $("#dist_wd option").removeAttr("selected").filter("[value='"+arr+"']").attr("selected",true);
+                $("#dist_wd").val(arr);
+                $("#dist_cywd option").removeAttr("selected").filter("[value='"+arrs+"']").attr("selected",true);
+                $("#dist_cywd").val(arrs);
+                order_click_dataall(parm['startDate'],parm['endDate'],parm['endDate'],parm['distdl'],parm['distwd'],parm['distcywd'],parm['dim1'],parm['dim2'],parm['clinum']);
+        
+            }else{
+
+                var parm = window["stack"][window["stack"].length - 1]['params'];
+
+                if(parm['distdl']=='D_I02'){$(".distthere").hide();}else{
+                    $(".distthere").show();
+                }
+                $("#tbales").attr("src",parm['img1']);
+                if(parm['img1']==window.location.protocol+'//'+window.location.host+"/anaweb/images/menu/1_04.png"){
+                    $("#searchdivtable").hide(); $('#tables1').hide();$('#tables').show();
+                }else{
+                    $("#searchdivtable").show();$('#tables1').show();$('#tables').hide();
+                }
+                var arr =$.session.get(parm['distwd']);
+                var arrs =$.session.get(parm['distcywd']);
+
+                $("#dist_wd option").removeAttr("selected").filter("[value='"+arr+"']").attr("selected",true);
+                $("#dist_wd").val(arr);
+                $("#dist_cywd option").removeAttr("selected").filter("[value='"+arrs+"']").attr("selected",true);
+                $("#dist_cywd").val(arrs);
+                order_dataurlstatis(parm['startDate'],parm['endDate'],parm['distdl'],parm['distwd'],parm['distcywd'],0);
+            }
+
+        }else{
+            if(parm['img1']==""||parm['img1']==undefined||parm['img1']==null){
+                $("#tbales").attr("src",window.location.protocol+'//'+window.location.host+"/anaweb/images/menu/1_04.png");
+                $("#searchdivtable").hide();  $('#tables1').hide();$('#tables').show();
+            }else{
+                $("#tbales").attr("src",parm['img1']);
+                if(parm['img1']==window.location.protocol+'//'+window.location.host+"/anaweb/images/menu/1_04.png"){
+                    $("#searchdivtable").hide(); $('#tables1').hide();$('#tables').show();
+                }else{
+                    $("#searchdivtable").show(); $('#tables1').show();$('#tables').hide();
+                }
+            }
+
+            $("#showhide button:first").hide();  //隐藏返回图标
+            if(parm['distdl']=='D_I02'){$(".distthere").hide();}else{
+                $(".distthere").show();
+            }
+            $("#dist_wd option").removeAttr("selected").filter("[value='"+'全部'+"']").attr("selected",true);
+            $("#dist_wd").val("全部");
+            $("#dist_cywd option").removeAttr("selected").filter("[value='"+'全部'+"']").attr("selected",true);
+            $("#dist_cywd").val('全部');
+            order_dataurlstatis(startDateSel,endDateSel,'D_I01','D_D00','D_D00',0);
+        }
+    }
+}
+
+
+
+$(document).ready(function () {
+    $('#datepicker').daterangepicker({
+        format: 'yyyy-mm-dd',
+        'minDate': '01/01/2015',
+        'maxDate': (moment(Date.now()).subtract(1, 'd')).format('MM-DD-YYYY'),
+        "startDate": '01/01/' + (moment(Date.now()).subtract(1, 'd')).format('YYYY'),
+        "endDate": (moment(Date.now()).subtract(1, 'd')).format('MM-DD-YYYY'),
+        'ranges' : {
+            '最近1日': [moment().subtract('days', 1), moment()],
+            '最近7日': [moment().subtract('days', 7), moment()],
+            '最近30日': [moment().subtract('days', 30), moment()]
+        },
+        "opens": 'left'
+    },function (start, end, label) {
+        startDateSel = start.format('YYYY-MM-DD');
+        endDateSel = end.format('YYYY-MM-DD');
+
+    });
+
+    $.get("/productTypeList/method/product/dim/dropdownlist", function (data, status) {
+        if(data.result)
+        {
+            var dist_dllen=data.data[0].data.length;
+            var dist_wdlen=data.data[1].data.length;
+            var ss=[];
+            var dd=[];
+            for(var i=0;i<dist_dllen;i++)
+            {
+                $('#dist_dl').append("<option data-dimcode='"+data.data[0].data[i].Dim_Cd+"'value='" +data.data[0].data[i].Dim_Nm+ "'>" +data.data[0].data[i].Dim_Nm+ "</option>");
+            }
+            for(var i=0;i<dist_wdlen;i++)
+            {   var aa=data.data[1].data[i];
+                ss[i]=aa.Dim_Nm;
+                dd[i]=aa.Dim_Cd;
+                $('#dist_wd').append("<option data-dimcode='"+data.data[1].data[i].Dim_Cd+"'value='" +data.data[1].data[i].Dim_Nm+ "'>" +data.data[1].data[i].Dim_Nm+ "</option>");
+                $('#dist_cywd').append("<option data-dimcode='"+data.data[1].data[i].Dim_Cd+"'value='" +data.data[1].data[i].Dim_Nm+ "'>" +data.data[1].data[i].Dim_Nm+ "</option>");
+            }
+
+            $("#dist_dl").change(function() {
+                var dist1 = $("#dist_dl option:selected").attr('data-dimcode');
+                if (dist1 == 'D_I02') {
+                    $(".distthere").hide();
+                } else {
+                    $(".distthere").show();
+                }
+            })
+            var startDate=startDateSel;
+            var endDate=endDateSel;
+
+            var distdl=$("#dist_dl option:selected").attr('data-dimcode');
+            var distwd=$("#dist_wd option:selected").attr('data-dimcode');
+            var distcywd=$("#dist_cywd option:selected").attr('data-dimcode');
+
+            $("#dist_wd").change(function(){
+                var vals=$("#dist_wd option:selected").val();
+                var valscywd=$("#dist_cywd option:selected").val();
+                $("#dist_cywd").empty();
+                for(var i=0;i<ss.length;i++)
+                {
+                    if(vals==ss[i])
+                    {
+                        if(vals=="全部")
+                        {
+                            $('#dist_cywd').append("<option data-dimcode='"+dd[i]+"'value='" +ss[i]+ "'>" +ss[i]+ "</option>");
+                        }
+                    }else{
+                        $('#dist_cywd').append("<option data-dimcode='"+dd[i]+"'value='" +ss[i]+ "'>" +ss[i]+ "</option>");
+                    }
+                }
+                $('#dist_cywd option[value='+valscywd+']').attr('selected',true);
+            })
+
+            $("#dist_cywd").change(function(){
+                var vals=$("#dist_cywd option:selected").val();
+                var valswd=$("#dist_wd option:selected").val();
+                $("#dist_wd").empty();
+                for(var i=0;i<ss.length;i++)
+                {
+                    if(vals==ss[i])
+                    {
+                        if(vals=="全部")
+                        {
+                            $('#dist_wd').append("<option data-dimcode='"+dd[i]+"'value='" +ss[i]+ "'>" +ss[i]+ "</option>");
+                        }
+                    }else{
+                        $('#dist_wd').append("<option data-dimcode='"+dd[i]+"'value='" +ss[i]+ "'>" +ss[i]+ "</option>");
+                    }
+                }
+                $('#dist_wd option[value='+valswd+']').attr('selected',true);
+            })
+            if(ss.length>1){
+                for(var c=0;c<ss.length;c++){
+                  $.session.set(dd[c],ss[c]);
+                }
+            }
+
+            $('#order_seledatadistbtn').on('click',function(){
+                var startDate=startDateSel;
+                var endDate  =endDateSel;
+                var distdl   =$("#dist_dl option:selected").attr('data-dimcode');
+                var distwd   =$("#dist_wd option:selected").attr('data-dimcode');
+                var distcywd =$("#dist_cywd option:selected").attr('data-dimcode');
+                var img1=$("#tbales")[0].src;
+
+
+                var  parm= {startDate:startDate,endDate:endDate,distdl:distdl,distwd:distwd,distcywd:distcywd,img1:img1};
+                if(parm['distdl']=='D_I02'){$(".distthere").hide();}else{
+                    $(".distthere").show();
+                }
+                doatvae(parm,'downm');
+               // order_dataurlstatis(startDate,endDate,distdl,distwd,distcywd);
+            })
+            var img2=$("#tbales")[0].src;
+            var optiones1= $('#dist_wd option').map(function(){return $(this).attr('data-dimcode');}).get().join(",");
+            var  parmv= {startDate:startDate,endDate:endDate,distdl:distdl,distwd:distwd,distcywd:distcywd,img1:img2,optiones1:optiones1};
+            if(parmv['distdl']=='D_I02'){$(".distthere").hide();}else{
+                $(".distthere").show();
+            }
+            $("#showhide button:first").hide();
+            doatvae(parmv,'downm');
+            //order_dataurlstatis(startDate,endDate,distdl,distwd,distcywd);
+
+        }else{
+            console.log("后台数据返回错误");
+        }
+    })
+
+});

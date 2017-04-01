@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="description" content="">
+    <meta http-equiv="author" content="">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <title>BI登陆界面</title>
+    <link rel="stylesheet" href="/anaweb/login/bilogin.css">
+    <!-- <script type="text/javascript" src="/anaweb/login/modernizr/2.8.3/modernizr.custom.js"></script>-->
+</head>
+<body>
+<script type="text/javascript">
+    if (window != top) {
+        top.location.href = location.href;
+    }
+</script>
+<header class="header">
+    <h1 class="headerLogo"><a href="http://www.csc86.com/" target="_blank" title="华南城网"><img
+                    src="/anaweb/login/logo.png" alt="华南城网"></a></h1>
+
+    <!--<div class="headerIntro"><span class="unvisi">华南城网BI系统</span></div>-->
+</header>
+
+<section class="main" id="mainBg">
+    <div class="main-inner" id="mainCnt">
+        <div class="theme">
+            <div class="login_pictures">
+                <div class="login_pictures_picture"
+                     style="background-image:url('/anaweb/login/bi.jpg');background-position:right 0;"></div>
+                <div class="login_pictures_txt"></div>
+            </div>
+
+
+            <div class="login">
+                <div class="header">帐号密码登录</div>
+                <div class="m-cnt">
+                    <form action="/tologin" method="post">
+                        <div class="loginForm_content">
+                            <div class="loginTips">
+                                <div class="error_tips" id="error_tips">
+                                    <% if(typeof data !== 'undefined'){ %>
+                                    <%= data.message %>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <fieldset>
+                                <div class="inputWrap">
+                                    <div class="uinArea" id="uinArea">
+                                        <div class="inputOuter">
+                                            <input type="text" class="inputstyle" name="account" placeholder="请输入账号"
+                                                   autofocus required>
+                                            <i class="un biicon"></i>
+                                        </div>
+                                    </div>
+                                    <div class="uinArea" id="uinArea">
+                                        <div class="inputOuter">
+                                            <input type="password" class="inputstyle password" name="password"
+                                                   placeholder="请输入密码" required>
+                                            <i class="pw biicon"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <div class="submit">
+                                <a class="login_button" href="javascript:void(0);" hidefocus="true">
+                                    <input type="submit" tabindex="6" value="登 录" class="btn" id="login_button"/>
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="footer">
+    <span>Copyright©2009-2014 China South City Holdings Limited. All Rights Reserved</span>
+</div>
+
+
+</body>
+</html> 
+

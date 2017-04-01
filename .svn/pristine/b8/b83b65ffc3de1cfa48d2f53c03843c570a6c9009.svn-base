@@ -1,0 +1,326 @@
+/**
+ * Created by Administrator on 2017/3/20.
+ */
+
+var async = require('async');
+var mysql = require('mysql');
+var express = require('express');
+var router = express.Router();
+var dbhelper = require('../util/mysql');
+var sql = require('../sql/productTypeList_sql');
+var server =  express();
+server.use('/productTypeList', router);
+
+//2017-02-16
+//产品多维分析
+/*
+ * 产品行业品类统计优化 下拉框数据接口
+ */
+
+router.get('/method/product/dim/dropdownlist', function(req, res, next) {
+    var dim_flg1 = 'I_IND';
+    var dim_flg2 = 'D_DIM';
+
+    var sqlParamsEntity= [];
+    sqlParamsEntity.push(dbhelper._getNewSqlParamEntity(sql.productManyDim1,[dim_flg1]));
+    sqlParamsEntity.push(dbhelper._getNewSqlParamEntity(sql.productManyDim2,[dim_flg2]));
+
+    dbhelper.queryMultiple(sqlParamsEntity,(resp) =>{
+        if(resp.result){
+            res.send({ result:true,code:0,message:"data success",data:resp});
+        }else{
+            res.send({result:false,code:-1,message:"data fail"});
+        }
+    });
+
+});
+
+router.get('/method/product/dim/datalist/startDate/:startDate/endDate/:endDate/distdl/:distdl/distwd/:distwd/distcywd/:distcywd/inits/:inits', function(req, res, next) {
+
+    var startDate = req.params.startDate;
+    var endDate = req.params.endDate;
+    var dim1 =  req.params.distdl;
+    var dim2 =  req.params.distwd;
+    var dim3 =  req.params.distcywd;
+    var dim5 =  req.params.inits;
+
+
+
+    var src = function (callback) {
+
+        var sqlParamsEntity= [];
+        sqlParamsEntity.push(dbhelper._getNewSqlParamEntity(sql.productGetCol1,[dim1]));
+        sqlParamsEntity.push(dbhelper._getNewSqlParamEntity(sql.productGetCol2,[dim2]));
+        sqlParamsEntity.push(dbhelper._getNewSqlParamEntity(sql.productGetCol3,[dim3]));
+
+        dbhelper.queryMultiple(sqlParamsEntity,(resp) =>{
+            if(resp.result){
+                var dim = '';
+                var grp_stat = '';
+                var collist = '';
+                var tbname = '';
+                var sql_stat = '';
+                var reg = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
+                var aa=reg.test(dim5);
+                if(resp[1].data[0].Dim_C1 == 'ALL' && resp[2].data[0].Dim_C1 == 'ALL') {
+                    if(startDate.length==7||endDate.length==7||aa){
+                        if(dim1=='D_I02'){
+                            dim = "date_format(payTime,'%Y-%m-%d') as dim1_nm,first_categroy_name as dim1_nm1, ";
+                            grp_stat = "date_format(payTime,'%Y-%m-%d'),first_categroy_name ,";
+                       }else if(dim1=='D_I01'){
+                            dim = "date_format(stat_dt,'%Y-%m-%d') as dim1_nm,";
+                            grp_stat = "date_format(stat_dt,'%Y-%m-%d'),";
+                        }
+                    }else{
+                        if(dim1=='D_I02'){
+                            dim = "first_categroy as dim1_nn,first_categroy_name as dim1_nm,";
+                            grp_stat = "first_categroy,first_categroy_name ,";
+                        }else if(dim1=='D_I01'){
+                            dim = "date_format(stat_dt,'%Y-%m') as dim1_nm,";
+                            grp_stat = "date_format(stat_dt,'%Y-%m'),";
+                        }
+                    }
+                }
+
+                for(var i=1; i<3;i++) {
+                    if(resp[i].data[0].Dim_C1 == 'ALL' || resp[i].data[0].Dim_C1 == undefined) {
+                        dim = dim + '';
+                        grp_stat = grp_stat + '';
+                    } else {
+                        if (resp[1].data[0].Dim_C1 == 'ALL') {
+                            dim = dim + resp[i].data[0].Dim_C1 + ' as dim1,';
+                        } else if (i==1) {
+                            dim = dim + resp[i].data[0].Dim_C1 + ' as dim1,';
+                        } else {
+                            dim = dim + resp[i].data[0].Dim_C1 + ' as dim2,'
+                        }
+                        grp_stat = grp_stat + resp[i].data[0].Dim_C1 + ',';
+                    }
+                    if(resp[i].data[0].Dim_C2 == 'ALL'|| resp[i].data[0].Dim_C2 == undefined) {
+                        dim = dim + '';
+                        grp_stat = grp_stat + '';
+                    } else {
+                        if (resp[1].data[0].Dim_C2 == 'ALL') {
+                            dim = dim + resp[i].data[0].Dim_C2 + ' as dim1_nm,';
+                        } else if (i==1) {
+                            dim = dim + resp[i].data[0].Dim_C2 + ' as dim1_nm,';
+                        } else {
+                            dim = dim + resp[i].data[0].Dim_C2 + ' as dim2_nm,'
+                        }
+                        grp_stat = grp_stat + resp[i].data[0].Dim_C2 + ',';
+                    }
+                }
+                if(dim1=='D_I02'){
+                    if(dim2=='D_D01'&& aa)
+                    {
+                        dim=dim+"date_format(payTime,'%Y-%m-%d') as dim1_nm,";
+                        grp_stat=grp_stat+"date_format(payTime,'%Y-%m-%d') ,";
+                    }
+                    collist = dim + 'SUM(sales_mount) as amt,SUM(sales_num) as amtNm';
+                    dim = "date_format(payTime,'%Y-%m') as dim1_nm1,";
+                    tbname = "csc_anasys.product_category_order_cnt_money";
+                    var statTm="payTime";
+                }else if(dim1=='D_I01'){
+                    collist = dim + 'SUM(' + resp[0].data[0].Dim_C1 + ') as amt';
+                    dim = "date_format(stat_dt,'%Y-%m') as dim1_nm,";
+                    tbname = "csc_anasys.products_category_cnt_day";
+                    var statTm="stat_dt";
+                }
+
+
+                if(startDate.length==7){
+                    startDate=startDate+'-01';
+                }
+                if(endDate.length==7){
+                    endDate=endDate+'-31';
+                }
+                if(dim5!=0){
+                    var dimname= ' and  first_categroy_name ="'+dim5+'"';
+                }else{
+                    var dimname='';
+                }
+                sql_stat = "select " + collist + " from " + tbname +
+                " where "+statTm+" between " + mysql.escape(startDate) + " and " + mysql.escape(endDate)  +  dimname+
+                " group by " + grp_stat.substring(0,grp_stat.length-1) + ";";
+                callback(null, sql_stat);
+            }else{
+                callback(null, "");
+            }
+        });
+    };
+
+    var rst = function (dysql,callback) {
+        dbhelper.query(dysql,function(resp) {
+            if (resp.result) {
+                callback(null, resp.data);
+            } else {
+                callback(null, "");
+            }
+        })
+    };
+    async.waterfall([src,rst], function (err, result) {
+        if (err) {
+            var resp = {
+                result: "error",
+                message: "系列查询失败"
+            };
+        } else {
+            res.send({ result:true,code:0,message:"data success",data:result});
+        }
+    });
+});
+
+//2017-02-21
+//产品多维分析
+/*
+ * 产品行业品类统计优化 下转数据接口
+ */
+
+router.get('/method/product/dim/clickdata/startDate/:startDate/endDate/:endDate/distdl/:distdl/distwd/:distwd/distcywd/:distcywd/val1/:val1/val2/:val2', function(req, res, next) {
+
+    var startDate = req.params.startDate;
+    var endDate = req.params.endDate;
+    var dim1 =  req.params.distdl;
+    var dim2 =  req.params.distwd;
+    var dim3 =  req.params.distcywd;
+    var dim4 =  req.params.val1;
+    var dim5 =  req.params.val2;
+
+    var src = function (callback) {
+
+        var sqlParamsEntity= [];
+        sqlParamsEntity.push(dbhelper._getNewSqlParamEntity(sql.productGetCol1,[dim1]));
+        sqlParamsEntity.push(dbhelper._getNewSqlParamEntity(sql.productGetCol2,[dim2]));
+        sqlParamsEntity.push(dbhelper._getNewSqlParamEntity(sql.productGetCol3,[dim3]));
+
+        dbhelper.queryMultiple(sqlParamsEntity,(resp) =>{
+            if(resp.result){
+                var dim = '';
+                var grp_stat = '';
+                var collist = '';
+                var tbname = '';
+                var sql_stat = '';
+                var andes='';
+
+                for(var i=1; i<3;i++) {
+                    if(resp[i].data[0].Dim_C1 == 'ALL' || resp[i].data[0].Dim_C1 == undefined) {
+                        dim = dim + '';
+                        grp_stat = grp_stat + '';
+                        andes=andes+ '';
+                    } else {
+                        if (resp[1].data[0].Dim_C1 == 'ALL') {
+                            dim = dim + resp[i].data[0].Dim_C1 + ' as dim1,';
+                            andes=andes+ '';
+                            if(dim5=='ALL'|| dim5 == undefined){
+                                andes=andes+ '';
+                            }else{
+                                andes=andes+ '  AND '+resp[i].data[0].Dim_C1 + '= "'+dim5+'" ';
+                            }
+
+                        } else if (i==1) {
+                            dim = dim + resp[i].data[0].Dim_C1 + ' as dim1,';
+                            if(dim4=='ALL'|| dim4 == undefined){
+                                andes=andes+ '';
+                            }else{
+                                andes=andes+ '  AND '+resp[i].data[0].Dim_C1 + '= "'+dim4+'" ';
+                            }
+                        } else {
+                            dim = dim + resp[i].data[0].Dim_C1 + ' as dim2,';
+                            if(dim5=='ALL'|| dim5 == undefined){
+                                andes=andes+ '';
+                            }else{
+                                andes=andes+ '  AND '+resp[i].data[0].Dim_C1 + '= "'+dim5+'" ';
+                            }
+                        }
+                        if(dim2=='D_D00'|| dim3=='D_D00'){
+                            grp_stat = resp[i].data[0].Dim_C1+',';
+                        }else{
+                            grp_stat = grp_stat + resp[i].data[0].Dim_C1 + ',';
+                        }
+                    }
+                    if(resp[i].data[0].Dim_C2 == 'ALL'|| resp[i].data[0].Dim_C2 == undefined) {
+                        dim = dim + '';
+                        grp_stat = grp_stat + '';
+                    } else {
+                        if (resp[1].data[0].Dim_C2 == 'ALL') {
+                            dim = dim + resp[i].data[0].Dim_C2 + ' as dim1_nm,';
+                        } else if (i==1) {
+                            dim = dim + resp[i].data[0].Dim_C2 + ' as dim1_nm,';
+                        } else {
+                            dim = dim + resp[i].data[0].Dim_C2 + ' as dim2_nm,'
+                        }
+                        if(dim2=='D_D00'|| dim3=='D_D00'){
+                            if(dim1=='D_I02'){
+                                grp_stat ="date_format(payTime,'%Y-%m-%d'),"+grp_stat+ resp[i].data[0].Dim_C2  +',' ;
+                            }else if(dim1=='D_I01'){
+                                grp_stat ="date_format(stat_dt,'%Y-%m-%d'),"+grp_stat+ resp[i].data[0].Dim_C2  +',' ;
+                            }
+
+                        }else{
+                            grp_stat = grp_stat + resp[i].data[0].Dim_C2 + ',';
+                        }
+
+                    }
+                }
+
+                if(dim2=='D_D00'|| dim3=='D_D00'){
+                    collist = dim + " date_format(stat_dt,'%Y-%m-%d') as stat_dt, SUM(" + resp[0].data[0].Dim_C1 + ") as amt";
+                }else{
+                    if(dim4=='ALL'|| dim5=='ALL'){
+                        grp_stat = grp_stat + '';
+                    }else{
+                        if(dim1=='D_I02'){
+                            dim = dim +" date_format(payTime,'%Y-%m-%d') as stat_dt, ";
+                            grp_stat ="date_format(payTime,'%Y-%m-%d'),"+grp_stat ;
+                        }else if(dim1=='D_I01'){
+                            dim = dim +" date_format(stat_dt,'%Y-%m-%d') as stat_dt, ";
+                            grp_stat ="date_format(stat_dt,'%Y-%m-%d'),"+grp_stat ;
+                        }
+
+                    }
+                    if(dim1=='D_I02'){
+                        collist = dim + 'SUM(' + resp[0].data[0].Dim_C1 + ') as amt,SUM(' + resp[0].data[0].Dim_C2 + ') as amt1';
+                    }else if(dim1=='D_I01'){
+                        collist = dim + 'SUM(' + resp[0].data[0].Dim_C1 + ') as amt';
+                    }
+                }
+
+                if(dim1=='D_I01'){
+                    tbname = "csc_anasys.products_category_cnt_day";
+                }else if(dim1=='D_I02'){
+                    tbname = "csc_anasys.product_category_order_cnt_money";
+                }
+
+
+                sql_stat = "select " + collist + " from " + tbname +
+                " where stat_dt between " + mysql.escape(startDate) + " and " + mysql.escape(endDate) + andes +
+                " group by " + grp_stat.substring(0,grp_stat.length-1) + ";";
+                callback(null, sql_stat);
+            }else{
+                callback(null, "");
+            }
+        });
+    };
+
+    var rst = function (dysql,callback) {
+        dbhelper.query(dysql,function(resp) {
+            if (resp.result) {
+                callback(null, resp.data);
+            } else {
+                callback(null, "");
+            }
+        })
+    };
+    async.waterfall([src,rst], function (err, result) {
+        if (err) {
+            var resp = {
+                result: "error",
+                message: "系列查询失败"
+            };
+        } else {
+            res.send({ result:true,code:0,message:"data success",data:result});
+        }
+    });
+});
+
+module.exports = server;

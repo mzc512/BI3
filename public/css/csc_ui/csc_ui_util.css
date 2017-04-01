@@ -1,0 +1,50 @@
+.black-screen-shade{
+    background: #000000;
+    opacity: 0.8;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+.pop-chart-wrap{
+    position: fixed;
+    background-color: #fff;
+    z-index: 2;
+    border: solid 1px #5e5e5e;
+    top: 10%;
+    left: 50%;
+    width: 90%;
+    margin-left: -45%;
+    border-radius: 6px;
+}
+.pop-chart-wrap .close-btn{
+    position: absolute;
+    top: 12px;
+    right: 4px;
+    text-align: center;
+    font-size: 4rem;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    font-weight: normal;
+    cursor: pointer;
+    color: #5e5e5e;
+}
+
+.pop-chart-wrap .modal-header{
+    background: #eee;
+    font-weight: bold;
+    font-size: 16px;
+}
+.pop-chart-wrap .modal-header .title{
+    height: 28px;
+    display: block;
+    line-height: 28px;
+}
+
+.pop-chart-wrap .pop-chart{
+    width: 100%;
+}

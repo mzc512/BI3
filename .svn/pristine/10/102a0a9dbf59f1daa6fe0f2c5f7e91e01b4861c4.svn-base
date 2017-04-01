@@ -1,0 +1,69 @@
+/**
+ * Created by Administrator on 2017/3/20.
+ */
+/**
+ /**
+ * Created by Administrator on 2016/12/2.
+ * payType     已付款品类
+ * payorderTypeList  已付款品类列表
+ * payCompany   已付款分公司
+ * payCompanyList   已付款分公司行业列表
+
+ * paymentIndustry  已付款行业
+ */
+
+const payType = `SELECT  cat_nm,SUM(order_cnt) AS orderNum , SUM(order_amt) AS orderPay FROM csc_anasys.classify_cnt_amt WHERE pay_dt BETWEEN ? AND ?
+                        AND Brn_id='B008' GROUP BY cat_nm`;
+const payorderTypeList = `SELECT cat_nm,Indry_Nm, SUM(order_cnt) AS orderNum , SUM(order_amt) AS orderPay FROM csc_anasys.classify_cnt_amt  WHERE pay_dt BETWEEN ? AND ?
+                       AND Brn_Id='B008'  GROUP BY cat_nm,Indry_Nm`;
+const payCompany = `SELECT brn_nm, SUM(order_cnt) AS orderNum , SUM(order_amt) AS orderPay FROM csc_anasys.classify_cnt_amt WHERE pay_dt BETWEEN ? AND ?
+                         GROUP BY brn_nm`;
+const payCompanyList = `SELECT brn_nm,indry_nm, SUM(order_cnt) AS orderNum , SUM(order_amt) AS orderPay FROM csc_anasys.classify_cnt_amt WHERE pay_dt BETWEEN ? AND ?
+                         GROUP BY brn_nm,indry_nm`;
+const paymentIndustry = `SELECT CASE WHEN indry_id IN ('I9999','I0008') THEN '其他' ELSE indry_nm
+                         END indry_nm, SUM(order_cnt) orderNum, SUM(order_amt) orderPay FROM csc_anasys.classify_cnt_amt
+                        WHERE pay_dt BETWEEN ? AND ? GROUP BY CASE WHEN indry_id IN ('I9999','I0008') THEN '其他' ELSE indry_nm END ;`;
+//产品多维分析
+const productManyDim1 = `SELECT Stat_Ind,Dim_Cd,Dim_Nm FROM csc_dim.csc_product_dim WHERE Stat_Ind = ? and Sts_Ind = '1' order by rank ;`;
+const productManyDim2 = `SELECT Stat_Ind,Dim_Cd,Dim_Nm FROM csc_dim.csc_product_dim WHERE Stat_Ind = ? and Sts_Ind = '1' order by rank;`;
+
+
+const productGetCol1 = `SELECT Dim_C1 FROM csc_dim.csc_product_dim WHERE Dim_Cd = ? and Sts_Ind = '1';`;
+const productGetCol2 = `SELECT Dim_C1,Dim_C2 FROM csc_dim.csc_product_dim WHERE Dim_Cd = ? and Sts_Ind = '1';`;
+const productGetCol3 = `SELECT Dim_C1,Dim_C2 FROM csc_dim.csc_product_dim WHERE Dim_Cd = ? and Sts_Ind = '1';`;
+
+
+
+
+const orderDetailsCancelled = `SELECT productName AS name,number AS num,price AS RMB FROM csc_anasys.orders_cancel_product WHERE orderid= ? ;` ;
+const orderDetailsCancelled1 = `SELECT t1.orderid,t1.totalMoney,t1.favourMoney,date_format(t1.createTime,'%Y-%m-%d %T') as createTime,
+                                t1.source,t2.col_desc as payStatus,t1.payMoney,date_format(t1.paytime,'%Y-%m-%d %T') as paytime,
+                                t1.transactionNo,t3.col_desc as paytool,t1.enterprise, t1.phone, t1.email,
+                                t1.membername, t1.receiverName, t1.receiverMobile, t1.receiverTel
+                                FROM csc_anasys.orders_cancel_dtl t1
+                                left outer join csc_dim.csc_order_dim t2
+                                on t1.paystatus = t2.col_code
+                                and t2.dim_code = 'pay_status'
+                                left outer join csc_dim.csc_order_dim t3
+                                on t1.paytool = t3.col_code
+                                and t3.dim_code = 'payType'
+                                WHERE t1.orderid= ? ;`;
+module.exports = {
+    payType:payType,
+    payorderTypeList:payorderTypeList,
+    payCompany:payCompany,
+    payCompanyList:payCompanyList,
+    paymentIndustry:paymentIndustry,
+
+    productManyDim1:productManyDim1,
+    productManyDim2:productManyDim2,
+
+    productGetCol1:productGetCol1,
+    productGetCol2:productGetCol2,
+    productGetCol3:productGetCol3,
+
+    orderDetailsCancelled:orderDetailsCancelled,
+    orderDetailsCancelled1:orderDetailsCancelled1
+};
+
+

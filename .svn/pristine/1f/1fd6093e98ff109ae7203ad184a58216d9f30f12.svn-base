@@ -1,0 +1,64 @@
+{
+    "systemkey": "BI",
+    "log4js": {
+        "filename": "/opt/logs/bi-report/access.log",
+        "maxLogSize": 104857600
+    },
+    "port": 8000,
+    "mysql": {
+        "host": "10.10.97.50",
+        "user": "bi_anasys",
+        "password": "bi_anasys@50",
+        "database": "csc_anasys",
+        "multipleStatements": true,
+        "connectTimeout": 28800,
+        "connectionLimit": 50
+    },
+    "hbase": {
+        "host": "10.10.97.34",
+        "port": 20550
+    },
+    "redis": {
+        "host": "10.10.97.126",
+        "port": "6379",
+        "password": "hncw@redis2016"
+    },
+    "sessionStore": {
+        "host": "10.10.97.126",
+        "port": "6379",
+        "pass": "hncw@redis2016",
+        "db": 1,
+        "ttl": 1800,
+        "logErrors": true
+    },
+    "cookie": {
+        "maxAge": 1800000
+    },
+    "cas_server": {
+        "hostname": "10.10.102.152",
+        "port": 9407,
+        "client": {
+            "Referer": "BI",
+            "User-Agent": "BI client"
+        },
+        "url": {
+            "login": "/service/sso/login",
+            "loginout": "/service/sso/loginout",
+            "checkloginstate": "/service/sso/checkloginstate",
+            "modifpwd": "/service/uuc/modifyPwd",
+            "getUserBaseInfo": "/service/uuc/getUserBaseInfo",
+            "getTopMenu": "/service/purview/firstMenu",
+            "getLeftMenu": "/service/purview/getMenu",
+            "getPurviewMenuUrl": "/service/purview/getPreventMenuUrl"
+        }
+    },
+    "websocket": {
+        "hostname": "10.10.97.131",
+        "port": 7777
+    },
+    "redisKeyPrefix": {
+        "systemPurviewCacheRefreshTime": "systemPurviewCacheRefreshTime",
+        "purviewMenuUrlKey": "purviewMenuUrl",
+        "leftMenuKey": "leftMenu"
+    }
+}

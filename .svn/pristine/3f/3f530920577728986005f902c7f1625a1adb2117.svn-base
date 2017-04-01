@@ -1,0 +1,94 @@
+/*
+ === 重写bootstrap样式 ===
+ */
+/*@media (min-width: 1200px){*/
+    /*.container {*/
+        /*width: 1200px;*/
+    /*}*/
+/*}*/
+/*@media (max-width: 768px){*/
+    /*.tabs-vertical ul li a{*/
+       /*text-align: center;*/
+    /*}*/
+/*}*/
+/*.col-md-2{*/
+    /*padding-left: 10px;*/
+    /*padding-right: 10px;*/
+/*}*/
+
+/*
+ === 自助分析页主体内容样式 ===
+ */
+body{
+    font-family: "Microsoft Yahei";
+    font-size: 1.3rem;
+    background-color: #f7f7f7;
+    color: #717888;
+}
+.main{
+    padding-top: 20px;
+}
+.box-leftfixed {
+    padding-left: 0;
+}
+.tabs-vertical{
+    background-color: #fff;
+}
+.tabs-content{
+    background-color: #fff;
+    padding: 0 20px;
+}
+
+.tabs-vertical ul li a{
+    display: block;
+    text-decoration: none;
+    color: #717888;
+    margin-right: 0px;
+    padding: .2rem;
+    line-height: 1.8;
+    text-indent: 2rem;
+
+}
+.tabs-vertical ul li a.tab-active {
+    color: #fff;
+    background-color: #fd7857;
+}
+.tabs-vertical ul li a:hover{
+    color: #fff;
+    background-color: #fd7857;
+}
+
+
+
+/* 主体内容 */
+.tabs-vertical .tabs-content{
+    padding: 0 2rem;
+}
+
+.container{
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    background: rgba(170, 170, 170, 0.8);
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(221, 221, 221, 0.4);
+}

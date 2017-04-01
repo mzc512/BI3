@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="/anaweb/js/jquery/v1.9.1/jquery.min.js" type="text/javascript"></script>
+    <script src="/anaweb/js/bootstrap/v3.3.5/bootstrap.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="/anaweb/css/base.css">
+    <script src="/anaweb/js/handlebars/4.0.5/handlebars-v4.0.5.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="/anaweb/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/anaweb/css/Font-Awesome/3.2.1/css/font-awesome.min.css">
+    <link href="/anaweb/css/user/userInfo.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="searchbox">
+    <div class="searchbox-warp">
+        <!--<span>用户ID:</span>-->
+        <input type="text" name="userId" id="keyes" placeholder="请输入用户ID"/>
+        <button type="button" class="f-blue-btn">搜索</button>
+    </div>
+</div>
+<div class="resume_div_wrap">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="common_box" id="baseInfo">
+        <tbody>
+        <tr>
+            <td class="gap_between_tit"></td>
+        </tr>
+        <tr>
+            <td class="common_tit">用户基本信息</td>
+        </tr>
+        <tr>
+            <td class="common_con">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tbody>
+                    <tr>
+                        <td class="common_left">会员ID：</td>
+                        <td class="common_right_l"></td>
+                        <td class="common_left">名称：</td>
+                        <td class="common_right_r"></td>
+                    </tr>
+                    <tr>
+                        <td class="common_left">性别：</td>
+                        <td class="common_right_l"></td>
+                        <td class="common_left">出生日期：</td>
+                        <td class="common_right_r"></td>
+                    </tr>
+                    <tr>
+                        <td class="common_left">省份：</td>
+                        <td class="common_right_l"></td>
+                        <td class="common_left">城市：</td>
+                        <td class="common_right_r"></td>
+                    </tr>
+                    <tr>
+                        <td class="common_left">电话区号：</td>
+                        <td class="common_right_l"></td>
+                        <td class="common_left">电话号码：</td>
+                        <td class="common_right_r"></td>
+                    </tr>
+                    <tr>
+                        <td class="common_left">手机号码：</td>
+                        <td class="common_right_l"></td>
+                        <td class="common_left">联系邮箱：</td>
+                        <td class="common_right_l"><a class="hyperlinks"
+                                                      href="#"></a></td>
+                    </tr>
+                    <tr>
+                        <td class="common_left">个人认证标志：</td>
+                        <td class="common_right_l"></td>
+                        <td class="common_left">企业会员标志：</td>
+                        <td class="common_right_r"></td>
+                    </tr>
+                    <tr>
+                        <td class="common_left">注册时间：</td>
+                        <td class="common_right_l"></td>
+                        <td class="common_left">注册IP：</td>
+                        <td class="common_right_r"></td>
+                    </tr>
+                    <tr>
+                        <td class="common_left">注册来源：</td>
+                        <td class="common_right_l"></td>
+                        <td class="common_left">验证方式：</td>
+                        <td class="common_right_r"></td>
+                    </tr>
+                    <tr>
+                        <td class="common_left">验证帐号：</td>
+                        <td class="common_right" colspan="3"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="common_box" id="memberInfo">
+        <tbody>
+        <tr>
+            <td class="gap_between_tit"></td>
+        </tr>
+        <tr>
+            <td class="common_tit">企业会员信息</td>
+        </tr>
+        <tr>
+            <td class="common_con">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tbody>
+                    <tr>
+                        <td class="common_left">企业名称：</td>
+                        <td class="common_right_l"></td>
+                        <td class="common_left">企业会员注册时间：</td>
+                        <td class="common_right_r"></td>
+                    </tr>
+                    <tr>
+                        <td class="common_left">省份：</td>
+                        <td class="common_right_l"></td>
+                        <td class="common_left">城市：</td>
+                        <td class="common_right_r"></td>
+                    </tr>
+                    <tr>
+                        <td class="common_left">区：</td>
+                        <td class="common_right_l"></td>
+                        <td class="common_left">详细地址：</td>
+                        <td class="common_right_r"></td>
+                    </tr>
+                    <tr>
+                        <td class="common_left">企业网址：</td>
+                        <td class="common_right" colspan="3"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <div class="common_tit" id="loginRecordHeader">登录记录 <i class="icon-double-angle-down" ></i><i
+            class="icon-double-angle-up"></i></div>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="common_box" id="loginRecord" style="display: none;" >
+        <tbody>
+        <tr>
+            <td class="gap_between_tit"></td>
+        </tr>
+
+        <tr>
+            <td class="common_con">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tbody>
+                    <tr>
+                        <td class="comlumn12">IP：</td>
+                        <td class="comlumn8">登录次数</td>
+                        <td class="comlumn40">第一次登录时间：</td>
+                        <td class="comlumn40">最后登录时间</td>
+                    </tr>
+                    <tr>
+                        <td class="comlumn12"></td>
+                        <td class="comlumn8"></td>
+                        <td class="comlumn40"></td>
+                        <td class="comlumn40"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+ <div class="common_tit" id="orderRecordHeader">下单记录 <i class="icon-double-angle-down" ></i>
+    <i class="icon-double-angle-up"></i></div>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="common_box" id="orderRecord" style="display: none;">
+        <tbody>
+        <tr>
+            <td class="gap_between_tit"></td>
+        </tr>
+        <tr>
+            <td class="common_con">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tbody>
+                    <tr>
+                        <td class="comlumn12_5">订单ID：</td>
+                        <td class="comlumn12_5">下单时间：</td>
+                        <td class="comlumn12_5">支付状态：</td>
+                        <td class="comlumn12_5">支付时间：</td>
+                        <td class="comlumn12_5">订单状态：</td>
+                        <td class="comlumn12_5">总金额：</td>
+                        <td class="comlumn12_5">优惠金额：</td>
+                        <td class="comlumn12_5">应付金额：</td>
+                    </tr>
+                    <tr>
+                        <td class="comlumn12_5"></td>
+                        <td class="comlumn12_5"></td>
+                        <td class="comlumn12_5"></td>
+                        <td class="comlumn12_5"></td>
+                        <td class="comlumn12_5"></td>
+                        <td class="comlumn12_5"></td>
+                        <td class="comlumn12_5"></td>
+                        <td class="comlumn12_5"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+<div class="common_tit" id="userLooks">用户浏览轨迹 <i class="icon-double-angle-down" ></i><i class="icon-double-angle-up"></i></div>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="common_box" id="userLook" style="display: none">
+        <tbody>
+        <tr>
+            <td class="gap_between_tit"></td>
+        </tr>
+
+        <tr>
+            <td class="common_con">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tbody>
+                    <tr>
+                        <td class="comlumn12_5">会话ID</td>
+                        <td class="comlumn12_5">浏览页面数量</td>
+                        <td class="comlumn12_5">登入网页</td>
+                        <td class="comlumn12_5">开始时间</td>
+                        <td class="comlumn12_5">退出网页</td>
+                        <td class="comlumn12_5">结束时间</td>
+                    </tr>
+                   <tr sessionid="123" class="target-popup">
+                        <td class="comlumn12_5"><a href="#"></a></td>
+                        <td class="comlumn12_5"></td>
+                        <td class="comlumn12_5"></td>
+                        <td class="comlumn12_5"></td>
+                        <td class="comlumn12_5"></td>
+                        <td class="comlumn12_5"></td>
+                    </tr>
+                   
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
+<script id="baseInfo-template" type="text/x-handlebars-template">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tbody>
+        <tr>
+            <td class="common_left">用户ID：</td>
+            <td class="common_right_l">{{user_id}}</td>
+            <td class="common_left">名称：</td>
+            <td class="common_right_r">{{user_nm}}</td>
+        </tr>
+        <tr>
+            <td class="common_left">性别：</td>
+            <td class="common_right_l">{{sex}}</td>
+            <td class="common_left">出生日期：</td>
+            <td class="common_right_r">{{birth_dt}}</td>
+        </tr>
+        <tr>
+            <td class="common_left">省份：</td>
+            <td class="common_right_l">{{pro_id}}</td>
+            <td class="common_left">城市：</td>
+            <td class="common_right_r">{{city_Id}}</td>
+        </tr>
+        <tr>
+            <td class="common_left">电话区号：</td>
+            <td class="common_right_l">{{area_cd}}</td>
+            <td class="common_left">电话号码：</td>
+            <td class="common_right_r">{{tel_no}}</td>
+        </tr>
+        <tr>
+            <td class="common_left">手机号码：</td>
+            <td class="common_right_l">{{phone}}</td>
+            <td class="common_left">联系邮箱：</td>
+            <td class="common_right_l"><a class="hyperlinks"
+                                          href="mailto:{{email}}">{{email}}</a></td>
+        </tr>
+        <tr>
+            <td class="common_left">个人认证标志：</td>
+            <td class="common_right_l">{{auth_Ind}}</td>
+            <td class="common_left">企业会员标志：</td>
+            <td class="common_right_r">{{ent_mem_Ind}}</td>
+        </tr>
+        <tr>
+            <td class="common_left">注册时间：</td>
+            <td class="common_right_l">{{register_tm}}</td>
+            <td class="common_left">注册IP：</td>
+            <td class="common_right_r">{{register_ip}}</td>
+        </tr>
+        <tr>
+            <td class="common_left">注册来源：</td>
+            <td class="common_right_l">{{register_source}}</td>
+            <td class="common_left">验证方式：</td>
+            <td class="common_right_r">{{auth_method}}</td>
+        </tr>
+        <tr>
+            <td class="common_left">验证帐号：</td>
+            <td class="common_right" colspan="3">{{auth_account}}</td>
+        </tr>
+        </tbody>
+    </table>
+</script>
+
+
+<script id="memberInfo-template" type="text/x-handlebars-template">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tbody>
+        <tr>
+            <td class="common_left">企业名称：</td>
+            <td class="common_right_l">{{name}}</td>
+            <td class="common_left">企业会员注册时间：</td>
+            <td class="common_right_r">{{register-tm}}</td>
+        </tr>
+        <tr>
+            <td class="common_left">省份：</td>
+            <td class="common_right_l">{{pro}}</td>
+            <td class="common_left">城市：</td>
+            <td class="common_right_r">{{city}}</td>
+        </tr>
+        <tr>
+            <td class="common_left">区：</td>
+            <td class="common_right_l">{{area}}</td>
+            <td class="common_left">详细地址：</td>
+            <td class="common_right_r">{{addr}}</td>
+        </tr>
+        <tr>
+            <td class="common_left">企业网址：</td>
+            <td class="common_right" colspan="3">{{web}}</td>
+        </tr>
+        </tbody>
+    </table>
+</script>
+
+
+<script id="loginRecord-template" type="text/x-handlebars-template">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tbody>
+        <tr>
+            <td class="comlumn12">IP：</td>
+            <td class="comlumn8">登录次数</td>
+            <td class="comlumn40">首次登录时间：</td>
+            <td class="comlumn40">最后登录时间</td>
+        </tr>
+        {{#each record}}
+        <tr>
+            <td class="comlumn12">{{ip}}</td>
+            <td class="comlumn8">{{count}}</td>
+            <td class="comlumn40">{{first}}</td>
+            <td class="comlumn40">{{last}}</td>
+        </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</script>
+
+<script id="orderRecord-template" type="text/x-handlebars-template">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tbody>
+                    <tr>
+                        <td class="comlumn12_5">订单ID：</td>
+                        <td class="comlumn12_5">下单时间：</td>
+                        <td class="comlumn12_5">支付状态：</td>
+                        <td class="comlumn12_5">支付时间：</td>
+                        <td class="comlumn12_5">订单状态：</td>
+                        <td class="comlumn12_5">总金额：</td>
+                        <td class="comlumn12_5">优惠金额：</td>
+                        <td class="comlumn12_5">应付金额：</td>
+                    </tr>
+                    {{#each records}}
+                    <tr>
+                        <td class="comlumn12_5">{{order_id}}</td>
+                        <td class="comlumn12_5">{{order_tm}}</td>
+                        <td class="comlumn12_5">{{pay_sts}}</td>
+                        <td class="comlumn12_5">{{pay_tm}}</td>
+                        <td class="comlumn12_5">{{order_sts}}</td>
+                        <td class="comlumn12_5">{{total_amt}}</td>
+                        <td class="comlumn12_5">{{fav_amt}}</td>
+                        <td class="comlumn12_5">{{real_amt}}</td>
+                    </tr>
+                    {{/each}}
+                 </tbody>
+            </table>
+</script>
+<script id="userLook-template" type="text/x-handlebars-template">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tbody>
+                    <tr>
+                        <td class="comlumn12_5">会话ID</td>
+                        <td class="comlumn12_5">浏览页面数量</td>
+                        <td class="comlumn12_5">登入网页</td>
+                        <td class="comlumn12_5">开始时间</td>
+                        <td class="comlumn12_5">退出网页</td>
+                        <td class="comlumn12_5">结束时间</td>
+                    </tr>
+                    {{#each recordes}}
+                    <tr>
+                        <td class="comlumn12_5"><a href="/anaweb/report/session_detail.html?userid={{dates}}{{session_id}}&userides={{userides}}" class="target-popup">{{session_id}}</a></td>
+                        <td class="comlumn12_5">{{pv}}</td>
+                        <td class="comlumn12_5">{{load_page}}</td>
+                        <td class="comlumn12_5">{{load_tm}}</td>
+                        <td class="comlumn12_5">{{out_page}}</td>
+                        <td class="comlumn12_5">{{exit_tm}}</td>
+                    </tr>
+                    {{/each}}
+                 </tbody>
+            </table>
+</script>
+<script type="text/javascript" src="/anaweb/js/user_files.js">
+</script>
+</body>
+</html>

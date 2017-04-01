@@ -1,0 +1,235 @@
+{
+	"result" : true,
+	"data" : [{
+			"pageId" : 4,
+			"pageName" : "订单分析",
+			"url" : "",
+			"parentId" : 2,
+			"className" : "a_list1",
+			"children" : [{
+					"pageId" : 8,
+					"pageName" : "订单总数量/金额",
+					"url" : "/report/order_cnt_amt.html",
+					"parentId" : 4,
+					"className" : ""
+				}, {
+					"pageId" : 9,
+					"pageName" : "订单分公司统计",
+					"url" : "/report/order_branch.html",
+					"parentId" : 4,
+					"className" : ""
+				}, {
+					"pageId" : 10,
+					"pageName" : "订单区域分布",
+					"url" : "/report/order_city.html",
+					"parentId" : 4,
+					"className" : ""
+				}, {
+					"pageId" : 11,
+					"pageName" : "订单卖家买家",
+					"url" : "/report/order_seller_buyer.html",
+					"parentId" : 4,
+					"className" : ""
+				}, {
+					"pageId" : 12,
+					"pageName" : "订单支付方式",
+					"url" : "/report/order_city.html",
+					"parentId" : 4,
+					"className" : ""
+				}, {
+					"pageId" : 13,
+					"pageName" : "订单下单时段",
+					"url" : "/report/order_hourly.html",
+					"parentId" : 4,
+					"className" : ""
+				}, {
+					"pageId" : 14,
+					"pageName" : "订单支付金额和时长",
+					"url" : "/report/order_pay_amt_duration.html",
+					"parentId" : 4,
+					"className" : ""
+				}, {
+					"pageId" : 15,
+					"pageName" : "订单商品销量",
+					"url" : "/anaweb/report/order_product.html",
+					"parentId" : 4,
+					"className" : ""
+				}, {
+					"pageId" : 39,
+					"pageName" : "订单多维分析",
+					"url" : "/report/order_data_distis.html",
+					"parentId" : 4,
+					"className" : ""
+				}, {
+					"pageId" : 16,
+					"pageName" : "订单行业统计",
+					"url" : "/report/order_types.html",
+					"parentId" : 4,
+					"className" : ""
+				}, {
+					"pageId" : 17,
+					"pageName" : "已取消订单",
+					"url" : "/anaweb/report/order_cancel.html",
+					"parentId" : 4,
+					"className" : ""
+				}, {
+				  "pageId" : 40,
+				  "pageName" : "采购优惠卷统计",
+				  "url" : "/report/order_discount_volume.html",
+				  "parentId" : 4,
+				  "className" : ""
+			}
+			]
+		}, {
+			"pageId" : 5,
+			"pageName" : "产品分析",
+			"url" : "",
+			"parentId" : 2,
+			"className" : "a_list2",
+			"children" : [{
+					"pageId" : 18,
+					"pageName" : "每日发布产品",
+					"url" : "/anaweb/report/developing_page.html",
+					"parentId" : 5,
+					"className" : ""
+				}
+			]
+		}, {
+			"pageId" : 6,
+			"pageName" : "用户分析",
+			"url" : "",
+			"parentId" : 2,
+			"className" : "a_list3",
+			"children" : [{
+					"pageId" : 19,
+					"pageName" : "注册会员渠道",
+					"url" : "/report/user_registerChannel_cnt.html",
+					"parentId" : 6,
+					"className" : ""
+				}, {
+					"pageId" : 20,
+					"pageName" : "注册会员数量",
+					"url" : "/report/user_register_cnt.html",
+					"parentId" : 6,
+					"className" : ""
+				}, {
+					"pageId" : 21,
+					"pageName" : "登录会员数量",
+					"url" : "/report/user_login_cnt.html",
+					"parentId" : 6,
+					"className" : ""
+				}, {
+					"pageId" : 22,
+					"pageName" : "活跃会员数量",
+					"url" : "/anaweb/report/user_active.html",
+					"parentId" : 6,
+					"className" : ""
+				}, {
+					"pageId" : 23,
+					"pageName" : "新老会员占比",
+					"url" : "/report/user_newerOlder.html",
+					"parentId" : 6,
+					"className" : ""
+				}, {
+					"pageId" : 24,
+					"pageName" : "供应采购商占比",
+					"url" : "/report/user_supplierBuyerbi.html",
+					"parentId" : 6,
+					"className" : ""
+				}, {
+					"pageId" : 25,
+					"pageName" : "会员区域分布",
+					"url" : "/report/register_memberDistribution.html",
+					"parentId" : 6,
+					"className" : ""
+				}, {
+					"pageId" : 26,
+					"pageName" : "会员流失与留存",
+					"url" : "/report/member_retentionValue.html",
+					"parentId" : 6,
+					"className" : ""
+				}, {
+					"pageId" : 27,
+					"pageName" : "会员转化率",
+					"url" : "/report/user_order_reansfer.html",
+					"parentId" : 6,
+					"className" : ""
+				}, {
+					"pageId" : 28,
+					"pageName" : "核心会员",
+					"url" : "/report/user_core.html",
+					"parentId" : 6,
+					"className" : ""
+				}, {
+					"pageId" : 29,
+					"pageName" : "购买情况",
+					"url" : "/report/user_order_pariod.html",
+					"parentId" : 6,
+					"className" : ""
+				}, {
+					"pageId" : 30,
+					"pageName" : "会员仪表盘",
+					"url" : "/anaweb/memberdashboard.html",
+					"parentId" : 6,
+					"className" : ""
+				}, {
+					"pageId" : 31,
+					"pageName" : "用户档案",
+					"url" : "/anaweb/report/userInfo.html",
+					"parentId" : 6,
+					"className" : ""
+				}, {
+					"pageId" : 32,
+					"pageName" : "新增/活跃用户",
+					"url" : "/report/user_new_active.html",
+					"parentId" : 6,
+					"className" : ""
+				}
+			]
+		}, {
+			"pageId" : 7,
+			"pageName" : "流量分析",
+			"url" : "",
+			"parentId" : 2,
+			"className" : "a_list4",
+			"children" : [{
+					"pageId" : 33,
+					"pageName" : "时间维度",
+					"url" : "/report/traffic_time.html",
+					"parentId" : 7,
+					"className" : ""
+				}, {
+					"pageId" : 34,
+					"pageName" : "页面维度",
+					"url" : "/report/traffic_page.html",
+					"parentId" : 7,
+					"className" : ""
+				}, {
+					"pageId" : 35,
+					"pageName" : "来源维度",
+					"url" : "/report/traffic_source.html",
+					"parentId" : 7,
+					"className" : ""
+				}, {
+					"pageId" : 36,
+					"pageName" : "系统维度",
+					"url" : "/report/traffic_system.html",
+					"parentId" : 7,
+					"className" : ""
+				}, {
+					"pageId" : 37,
+					"pageName" : "地域维度",
+					"url" : "/report/traffic_region.html",
+					"parentId" : 7,
+					"className" : ""
+				}, {
+					"pageId" : 38,
+					"pageName" : "关键词搜索",
+					"url" : "/report/traffic_search.html",
+					"parentId" : 7,
+					"className" : ""
+				}
+			]
+		}
+	]
+}

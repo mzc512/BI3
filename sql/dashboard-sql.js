@@ -1,0 +1,106 @@
+/***
+ * dashboard-sql.js
+ * //code by rain.xia xiashan17@163.com
+ */
+
+
+
+const getCurrentYearSummary1 = `SELECT SUM(t1.order_cnt) AS order_cnt_total,SUM(t1.order_amt) AS order_amt_gmv
+FROM csc_anasys.orders_cnt_amt_gmv t1 WHERE t1.order_dt BETWEEN ? AND ? ;`;
+
+const getCurrentYearSummary2 = `SELECT SUM(t1.order_cnt) AS order_cnt,SUM(t1.order_amt) AS order_amt
+FROM csc_anasys.orders_cnt_amt t1 WHERE t1.order_dt BETWEEN ? AND ? ;`;
+
+const getQuarterDutyData1 = `SELECT t1.name,
+SUM(COALESCE(order_cnt,0)) AS order_cnt_total,
+SUM(COALESCE(order_amt,0)) AS order_amt_gmv
+FROM csc_operate.tbl_runplan t1
+LEFT OUTER JOIN csc_anasys.orders_cnt_amt_gmv t2
+ON t1.start_date <= t2.order_dt
+AND t1.end_date >= t2.order_dt
+AND t2.order_dt BETWEEN ? AND ?
+WHERE t1.end_date BETWEEN ? AND ?
+GROUP BY t1.name, t1.start_date, t1.end_date
+ORDER BY t1.start_date;`;
+
+const getQuarterDutyData2 = `SELECT t1.name,
+SUM(COALESCE(order_cnt,0)) AS order_cnt,
+SUM(COALESCE(order_amt,0)) AS order_amt
+FROM csc_operate.tbl_runplan t1
+LEFT OUTER JOIN csc_anasys.orders_cnt_amt t2
+ON t1.start_date <= t2.order_dt
+AND t1.end_date >= t2.order_dt
+AND t2.order_dt BETWEEN ? AND ?
+WHERE t1.end_date BETWEEN ? AND ?
+GROUP BY t1.name, t1.start_date, t1.end_date
+ORDER BY t1.start_date;`;
+
+
+const getQuarterBranchOfficerate1 =`SELECT t3.area_name, SUM(COALESCE(Order_Amt,0)) AS reach
+FROM csc_operate.tbl_runplan t1
+INNER JOIN csc_operate.tbl_runplan_target t2
+ON t1.run_code = t2.run_code
+INNER JOIN csc_operate.tbl_company t3
+ON t2.area_code = t3.area_code
+LEFT OUTER JOIN csc_anasys.classify_cnt_amt_gmv t4
+ON t1.start_date <= t4.order_dt
+AND t1.end_date >= t4.order_dt
+AND t3.area_name = t4.Brn_Nm
+AND t4.order_dt BETWEEN ? AND ?
+WHERE t1.start_up = 1
+AND t3.area_code NOT IN ('2626547049f6bc1bcf14b2fed3b4d088','ebd08f3ee6a567375c035c1f66244937','3464d5234d37d015erea25c21132321')
+GROUP BY t3.area_name
+ORDER BY area_name
+;`;
+
+const getQuarterBranchOfficerate2 =`SELECT t3.area_name, t2.target
+FROM csc_operate.tbl_runplan t1
+INNER JOIN csc_operate.tbl_runplan_target t2
+ON t1.run_code = t2.run_code
+INNER JOIN csc_operate.tbl_company t3
+ON t2.area_code = t3.area_code
+WHERE t1.start_up = 1
+AND t3.area_code NOT IN ('2626547049f6bc1bcf14b2fed3b4d088','ebd08f3ee6a567375c035c1f66244937','3464d5234d37d015erea25c21132321')
+ORDER BY area_name
+;`;
+
+
+const getClassifyGMVData=`SELECT indry_nm, SUM(order_cnt) order_cnt,SUM(order_amt) order_amt
+FROM csc_anasys.classify_cnt_amt
+WHERE pay_dt BETWEEN ? AND ?
+AND company_id <> 'OTHERS'
+GROUP BY indry_nm
+ORDER BY SUM(order_amt) DESC
+LIMIT 10`;
+
+const getMemberCount =`SELECT SUM(t1.reg_num) num FROM csc_anasys.reg_usr_cnt_day t1`;
+
+
+const getTodayGMV =`SELECT SUM(orderAmt) num FROM csc_anasys.visit_order WHERE ts BETWEEN UNIX_TIMESTAMP(?) AND UNIX_TIMESTAMP(?) `;
+
+
+const getOnlineLoginData=`SELECT COUNT(distinct(user)) num FROM csc_anasys.visit_login WHERE ts BETWEEN UNIX_TIMESTAMP(?) AND UNIX_TIMESTAMP(?) `;
+
+const getNewMemberData=`SELECT COUNT(distinct(VipName)) num FROM csc_anasys.visit_vip WHERE ts BETWEEN UNIX_TIMESTAMP(?) AND UNIX_TIMESTAMP(?) `;
+
+const getEventAbout=`SELECT a.eventName,b.paramName,b.paramLabel FROM  web_event a LEFT JOIN  web_event_param b
+ ON a.eventId = b.eventId  AND b.paramShow='1' `;
+
+const getAllGMV=`SELECT SUM(order_amt) total_gmv FROM csc_anasys.orders_cnt_amt_gmv WHERE order_dt >= '2016-04-01' `;
+
+
+module.exports = {
+    getCurrentYearSummary1: getCurrentYearSummary1,
+    getCurrentYearSummary2:getCurrentYearSummary2,
+    getQuarterDutyData1: getQuarterDutyData1,
+    getQuarterDutyData2:getQuarterDutyData2,
+    getQuarterBranchOfficerate1:getQuarterBranchOfficerate1,
+    getQuarterBranchOfficerate2:getQuarterBranchOfficerate2,
+    getClassifyGMVData:getClassifyGMVData,
+    getMemberCount:getMemberCount,
+    getTodayGMV:getTodayGMV,
+    getOnlineLoginData:getOnlineLoginData,
+    getNewMemberData:getNewMemberData,
+    getEventAbout:getEventAbout,
+    getAllGMV:getAllGMV
+};

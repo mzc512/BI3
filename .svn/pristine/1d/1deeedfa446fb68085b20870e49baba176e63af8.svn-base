@@ -1,0 +1,222 @@
+/**
+ * dashboard router
+ */
+
+var express = require('express');
+var router = express.Router();
+var dbhelper = require('../util/mysql');
+var businessTools = require('../util/businessTools');
+var sql = require('../sql/dashboard-sql');
+var moment = require('moment');
+var server =  express();
+server.use('/dashboard', router);
+
+
+
+
+
+router.get('/getCurrentYearSummary', function(req, res, next) {
+    var caiYearInfo = businessTools.getCaiYearInfo();
+    var caiYear = caiYearInfo.caiYear;
+    var param = caiYearInfo.timeAcross;
+    var sqlParamsEntity=[];
+    sqlParamsEntity.push(dbhelper._getNewSqlParamEntity(sql.getCurrentYearSummary1, param));
+    sqlParamsEntity.push(dbhelper._getNewSqlParamEntity(sql.getCurrentYearSummary2, param));
+
+    dbhelper.queryMultiple(sqlParamsEntity,(resp) =>{
+        if(resp.result){
+            var data ={caiYear:caiYear};
+            Object.assign(data,resp[0].data[0],resp[1].data[0]);
+            res.send({ result:true,code:0,message:"data success",data:data});
+        }else{
+            res.send({result:false,code:-1,message:"data fail"});
+        }
+    });
+
+});
+
+
+
+router.get('/getQuarterDutyData', function(req, res, next) {
+    var caiYearInfo = businessTools.getCaiYearInfo();
+    var param = caiYearInfo.timeAcrossForCalc;
+    var sqlParamsEntity=[];
+    sqlParamsEntity.push(dbhelper._getNewSqlParamEntity(sql.getQuarterDutyData1, param));
+    sqlParamsEntity.push(dbhelper._getNewSqlParamEntity(sql.getQuarterDutyData2, param));
+    dbhelper.queryMultiple(sqlParamsEntity,(resp) =>{
+        if(resp.result){
+            if(resp[0].data.length!=resp[1].data.length){
+                res.send({result:false,code:-1,message:"data fail"});
+            }else{
+                var arr1 = resp[0].data;
+                var arr2 = resp[1].data;
+                var arr =[];
+                var attrs = ["order_cnt_total","order_amt_gmv","order_cnt","order_amt"];
+                for(let i =0,len=arr1.length;i<len;i++){
+                    //if(arr1[i].order_cnt_total<=0){ // only display history Quarter
+                    //    continue;
+                    //}
+                    var item = Object.assign(arr1[i],arr2[i]);
+                    if(i>0){
+                        attrs.forEach((e)=>{
+                            if(item[e]==0){
+                                item['percent_'+e]=0;
+                            }else{
+                                item['percent_'+e]=businessTools.percentage(item[e] - arr[i-1][e],item[e]);
+                            }
+                        });
+                    }
+                    arr.push(item);
+                }
+                arr.shift();
+
+                var mthArray =[],gmvAmtArray=[],amtArray=[],gmvCntArray=[],cntArray=[],
+                    perGmvAmtArray=[],perAmtArray=[],perGmvCntArray=[],perCntArray=[];
+
+                arr.forEach((e)=>{
+                    mthArray.push(e.name);
+                    gmvAmtArray.push(e.order_amt_gmv);
+                    amtArray.push(e.order_amt);
+                    gmvCntArray.push(e.order_cnt_total);
+                    cntArray.push(e.order_cnt);
+                    perGmvAmtArray.push(e.percent_order_amt_gmv);
+                    perAmtArray.push(e.percent_order_amt);
+                    perGmvCntArray.push(e.percent_order_cnt_total);
+                    perCntArray.push(e.percent_order_cnt);
+                });
+                var data = {mthArray:mthArray,gmvAmtArray:gmvAmtArray,amtArray:amtArray,gmvCntArray:gmvCntArray,
+                    cntArray:cntArray,perGmvAmtArray:perGmvAmtArray,perAmtArray:perAmtArray,perGmvCntArray:perGmvCntArray,perCntArray:perCntArray};
+                res.send({ result:true,code:0,message:"data success",data:data});
+            }
+        }else{
+            res.send({result:false,code:-1,message:"data fail"});
+        }
+    });
+});
+
+router.get('/getQuarterBranchOfficerate', function(req, res, next) {
+    var caiYearInfo = businessTools.getCaiYearInfo();
+    var param = caiYearInfo.timeAcross;
+    var sqlParamsEntity=[];
+    sqlParamsEntity.push(dbhelper._getNewSqlParamEntity(sql.getQuarterBranchOfficerate1, param));
+    sqlParamsEntity.push(dbhelper._getNewSqlParamEntity(sql.getQuarterBranchOfficerate2, null));
+    dbhelper.queryMultiple(sqlParamsEntity,function(resp) {
+        if(resp.result){
+            if(resp[0].data.length!=resp[1].data.length){
+                res.send({result:false,code:-1,message:"data fail"});
+            }else{
+                var arr1 = resp[0].data;
+                var arr2 = resp[1].data;
+                var arr = [];
+                var legends =[];
+                arr1.forEach((e,i)=>{
+
+                    var percent =0,diffPercent=0;
+                    if(arr2[i].target==0){
+                        percent=0,diffPercent=100;
+                    }else{
+                        percent = ((e.reach/arr2[i].target)*100).toFixed(2);
+                        diffPercent = (percent>=100)?0:(100-percent).toFixed(2);
+                    }
+                    arr.push([{name: 'other', value: diffPercent},{name: e.area_name, value: percent,goals:arr2[i].target,reach:e.reach}]);
+                    legends.push(e.area_name);
+                });
+                //legends.shift();
+                //arr.shift();
+                res.send({ result:true,code:0,message:"data success",data:{legends:legends,precent:arr}});
+            }
+        }else{
+            res.send({result:false,code:-1,message:"data fail"});
+        }
+    });
+});
+
+
+router.get('/getClassifyGMVData', function(req, res, next) {
+    var caiYearInfo = businessTools.getCaiYearInfo();
+    var param = caiYearInfo.timeAcross;
+
+    dbhelper.query(sql.getClassifyGMVData,param,(resp) =>{
+        if(resp.result){
+            var legends =[];
+            var arr =[];
+            resp.data.forEach((e,i)=>{
+                arr.push({name: e.indry_nm, value: e.order_amt});
+                legends.push(e.indry_nm);
+            });
+            var data = {legends:legends,data:arr};
+            res.send({ result:true,code:0,message:"data success",data:data});
+        }else{
+            res.send({result:false,code:-1,message:"data fail"});
+        }
+    });
+
+});
+
+
+router.get('/initMemberAbout', function(req, res, next) {
+    var type=req.params.type;
+    var today = new Date();
+    var start =  moment(today).format('YYYY-MM-DD');
+    var end = moment().add(1, 'days').format('YYYY-MM-DD');
+
+    var sqlMemberCount=[];
+        sqlMemberCount.push(dbhelper._getNewSqlParamEntity(sql.getMemberCount));
+            sqlMemberCount.push(dbhelper._getNewSqlParamEntity(sql.getNewMemberData, [start,end]));
+        dbhelper.queryMultiple(sqlMemberCount,(resp) =>{
+        if(resp.result){
+            var  add =parseFloat(resp[1].data[0].num?resp[1].data[0].num:0);
+            var  sum= parseFloat(resp[0].data[0].num)+ add;
+            var d={sum:sum,add:add};
+            res.send({ result:true,code:0,data:d});
+        }else{
+            res.send({result:false,code:-1,message:"data fail"});
+        }
+    });
+});
+
+router.get('/initGmvAbout', function(req, res, next) {
+    var caiYearInfo = businessTools.getCaiYearInfo();
+    var param = caiYearInfo.timeAcross;
+    var today = new Date();
+    var start =  moment(today).format('YYYY-MM-DD');
+    var end = moment().add(1, 'days').format('YYYY-MM-DD');
+    var sqlParamsEntity=[];
+    sqlParamsEntity.push(dbhelper._getNewSqlParamEntity(sql.getCurrentYearSummary1, param));
+
+    sqlParamsEntity.push(dbhelper._getNewSqlParamEntity(sql.getTodayGMV, [start,end]));
+
+
+    dbhelper.queryMultiple(sqlParamsEntity,(resp) =>{
+        if(resp.result){
+            var  add =parseFloat(resp[1].data[0].num?resp[1].data[0].num:0);
+            var  sum= parseFloat(resp[0].data[0].order_amt_gmv) + add;
+            var d={sum:sum,add:add};
+            res.send({ result:true,code:0,data:d});
+        }else{
+            res.send({result:false,code:-1,message:"data fail"});
+        }
+    });
+
+});
+
+
+router.get('/onlineLogin', function(req, res, next) {
+    dbhelper.query(sql.getOnlineLoginData ,(resp) =>{
+        if(resp.result){
+            var data =resp.data[0].num ;
+            res.send({ result:true,code:0,message:"data success",data:data});
+        }else{
+            res.send({result:false,code:-1,message:"data fail"});
+        }
+    });
+
+});
+
+
+
+
+
+
+
+module.exports = server;

@@ -1,0 +1,158 @@
+/*user_core
+*核心会员 表
+**/
+
+var echartsBox = $('.echartsBox');
+echartsBox.css("padding-top", "4px");
+
+$('#toobar').show();
+
+//tabs
+echartsBox.append('<ul id="group" class="nav nav-tabs"></ul>');
+
+$("#group").append('<li class="active"><a href="#search" data-toggle="tab">核心会员</a></li>');
+$("#group").append('<li><a href="#industry" data-toggle="tab">忠诚会员</a></li>');
+
+var container = [];
+container.push('<div id="tabs" class="tab-content" >');
+container.push('<div id="search" class="tab-pane active chart" ></div>');
+container.push('<div id="industry" class="tab-pane chart "></div>');
+container.push('</div>');
+
+var tabs = $('<div id="tabs" class="tab-content" ></div>');
+echartsBox.append(tabs);
+tabs.append(container.join(""));
+
+var startDateInit = (moment(Date.now()).subtract(30, 'd')).format('YYYY-MM-DD');
+var endDateInit = (moment(Date.now()).subtract(1, 'd')).format('YYYY-MM-DD');
+
+var startpaymentIndustryDay=startDateInit;
+var endpaymentIndustryDay=endDateInit;
+var searchStartDay = startDateInit;
+var searchEndDay = endDateInit;
+
+//品类
+function selectedSearchList(startDt, endDt) {
+    searchStartDay=startDt;
+    searchEndDay=endDt;
+
+    $('#search').empty();
+    $('#search').append(
+        '<table id="searchTable"' +
+        'data-toggle="table"' +
+        'data-search="true"' +
+        'data-show-columns="true"' +
+        'data-pagination="true"' +
+        'data-page-size="10"' +
+        'data-page-list="[10,50,100]"' +
+        'data-height="500"' +
+        '></table>');
+
+    $('#searchTable').append(
+        '<thead>' +
+        '<tr>' +
+        '<th data-field="core_id"  data-sortable="true">核心会员ID</th>' +
+        '<th data-field="core_cnt" data-sortable="true">支付订单数</th>' +
+        '<th data-field="moneys" data-sortable="true" data-formatter="amtFormatter">金额</th>' +
+        '</tr>' +
+        '</thead>'
+    );
+    $('#searchTable').bootstrapTable({
+        url: '/router/rest/method/memberCores/begin/'+startDt+'/end/'+endDt
+    });
+}
+selectedSearchList(searchStartDay, searchEndDay);
+
+
+//行业
+function selectedIndustryList(startDt, endDt) {
+    startpaymentIndustryDay=startDt;
+    endpaymentIndustryDay=endDt;
+    $('#industry').empty();
+    $('#industry').append(
+        '<table id="industryTable"' +
+        'data-toggle="table"' +
+        'data-search="true"' +
+        'data-show-columns="true"' +
+        'data-pagination="true"' +
+        'data-page-size="10"' +
+        'data-page-list="[10,50,100]"' +
+        'data-height="500"' +
+        '></table>');
+
+    $('#industryTable').append(
+        '<thead>' +
+        '<tr>' +
+        '<th data-field="loyal_id" data-sortable="true">忠诚会员ID</th>' +
+        '<th data-field="loyal_cnt" data-sortable="true">支付订单数</th>' +
+        '<th data-field="moneys1" data-sortable="true"　data-formatter="amtFormatter">金额</th>' +
+        '</tr>' +
+        '</thead>'
+    );
+    $('#industryTable').bootstrapTable({
+        url: '/router/rest/method/memberLoyales/begin/'+startDt+'/end/'+endDt
+    });
+}
+$("#toobar").hide(); 
+$(document).ready(function () { 
+          var activeTab='';
+    $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+        var active = e.target;
+        activeTab = $(active).attr('href');
+        switch (activeTab) {
+            case '#search':
+                $("#toobar").hide();  $("#payTool").show(); $("#payBranch").hide();
+                $('#datepicker').data('daterangepicker').setStartDate(moment(searchStartDay).format('MM/DD/YYYY'));
+                $('#datepicker').data('daterangepicker').setEndDate(moment(searchEndDay).format('MM/DD/YYYY'));
+                selectedSearchList(searchStartDay, searchEndDay);
+                break;
+
+            case '#industry':
+                $("#toobar").hide();     $("#payTool").hide(); $("#payBranch").hide();
+                $('#datepicker').data('daterangepicker').setStartDate(moment(startpaymentIndustryDay).format('MM/DD/YYYY'));
+                $('#datepicker').data('daterangepicker').setEndDate(moment(endpaymentIndustryDay).format('MM/DD/YYYY'));
+                selectedIndustryList(startpaymentIndustryDay, endpaymentIndustryDay);
+                break;
+        }
+
+    });
+
+    $('#datepicker').daterangepicker(
+        {
+            'minDate': '01/01/2015',
+            'maxDate': (moment(Date.now()).subtract(0, 'd')).format('MM/DD/YYYY'),
+            "startDate": formatDay(searchStartDay),
+            "endDate": formatDay(searchEndDay),
+            'ranges' : {
+                '最近7日': [moment().subtract('days', 6), moment()],
+                '最近30日': [moment().subtract('days', 29), moment()],
+                '最近90日': [moment().subtract('days', 89), moment()]
+            },
+            'opens': 'left'
+        },
+        function (start, end, label) {
+            var yearBeg = '01/01/' + moment(Date.now()).format('YYYY');
+            if (moment(start) < yearBeg) {
+                $('#datepicker').data('daterangepicker').setStartDate((moment(Date.now()).subtract(7, 'd')).format('MM/DD/YYYY'));
+                $('#datepicker').data('daterangepicker').setEndDate((moment(Date.now()).subtract(1, 'd')).format('MM/DD/YYYY'));
+                start = moment(startDateInit);
+                end = moment(endDateInit);
+            }
+            switch (activeTab) {
+                case '#search':
+                    selectedSearchList(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+                    break;
+         
+                case '#industry':
+                    selectedIndustryList(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+                  break;
+                case '':
+                    selectedSearchList(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+                    break;
+            }
+        }
+    );
+
+});
+
+$('.fixed-table-pagination').css({'height':'100px'});

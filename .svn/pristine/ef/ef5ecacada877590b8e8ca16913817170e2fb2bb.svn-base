@@ -1,0 +1,31 @@
+{
+  "name": "BI",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "dev": "node anaweb.js"
+  },
+  "dependencies": {
+    "async": "^2.1.2",
+    "captchapng": "0.0.1",
+    "compression": "^1.6.2",
+    "cookie-parser": "^1.4.3",
+    "excel-export": "^0.5.1"
+  },
+  "devDependencies": {
+    "body-parser": "^1.15.2",
+    "connect-redis": "^3.1.0",
+    "ejs": "^2.5.1",
+    "express": "^4.14.0",
+    "express-session": "^1.14.1",
+    "generic-pool": "^2.4.2",
+    "log4js": "^0.6.38",
+    "moment": "^2.14.1",
+    "mysql": "^2.11.1",
+    "serve-favicon": "^2.3.0",
+    "coffee-script": "1.11.1",
+    "hbase": "0.2.2",
+    "hbase-client": "1.4.0"
+  },
+  "main": "./index.js"
+}

@@ -1,0 +1,16 @@
+前端使用技术，不包含nodejs(nodejs npm包直接见包内README.md文件)
+
+
+1.echart字符云  https://github.com/ecomfe/echarts-wordcloud
+2.jquery1.9.x版本  http://api.jquery.com/
+3.bootstrap3.3.x版本 http://getbootstrap.com/getting-started
+4.百度echarts3.3.x版本 http://echarts.baidu.com/option.html#title
+5.bootstrap-table https://github.com/wenzhixin/bootstrap-table
+6.时间选择控件daterangepicker for bootstrap http://www.daterangepicker.com/#options
+7.前端模版引擎handlebarsjs http://handlebarsjs.com/
+8.字体库http://www.bootcss.com/p/font-awesome/
+9.bootstrap自带字体库 http://www.runoob.com/bootstrap/bootstrap-glyphicons.html
+10.jqueryui http://jqueryui.com/
+11.PC自定义滚动条jscrollpane  http://jscrollpane.kelvinluck.com/ 因部分bug修改过
+12.时间处理库momentjs http://momentjs.cn/docs/
+13.自定义加载条 pace.js http://github.hubspot.com/pace/

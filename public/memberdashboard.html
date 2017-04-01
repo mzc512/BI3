@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="/anaweb/js/jquery/v1.9.1/jquery.min.js" type="text/javascript"></script>
+    <script src="/anaweb/js/bootstrap/v3.3.5/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/anaweb/js/bootstrap-table/v1.11.0/bootstrap-table.js" type="text/javascript"></script>
+    <script src="/anaweb/js/echarts/v3.1.10/echarts.min.js" type="text/javascript"></script>
+    <script src="/anaweb/js/chartTool.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="/anaweb/css/base.css">
+    <script src="/anaweb/js/handlebars/4.0.5/handlebars-v4.0.5.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="/anaweb/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/anaweb/css/bootstrap-table/v1.11.0/bootstrap-table.css">
+    <link rel="stylesheet" href="/anaweb/css/Font-Awesome/3.2.1/css/font-awesome.min.css">
+    <link href="/anaweb/css/user/memberdashboard.css" rel="stylesheet">
+</head>
+<body>
+<div class="member_all">
+        <div class="searchbox">
+            <div class="searchbox-warp">
+                <input type="text" name="userId" id="keyes" placeholder="请输入用户ID">
+                <button type="button" class="f-blue-btn">搜索</button>
+            </div>
+        </div>
+        <div class="tabs-wrap current-tabs-wrap">
+            <div class="member_wth_12 member_padding0">
+                <div class="enlarge-btn"></div>
+                <div class="col-sm-12 col-md-12 chart-box-allfixed">
+                    <div class="member_bjbs resume_div_wrap">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="common_box">
+                            <tbody>
+                            <tr>
+                                <td class="common_tit">用户基本信息</td>
+                            </tr>
+                            <tr>
+                                <td class="common_con" id="baseInfo-content">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tbody>
+                                        <tr>
+                                            <td class="common_left">会员ID：</td>
+                                            <td class="common_right_l"></td>
+                                            <td class="common_left">地理(省市)：</td>
+                                            <td class="common_right_r"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="common_left">名称：</td>
+                                            <td class="common_right_l"></td>
+                                            <td class="common_left">所属行业：</td>
+                                            <td class="common_right_r"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="common_left">email：</td>
+                                            <td class="common_right_l"></td>
+                                            <td class="common_left">最近登录时间：</td>
+                                            <td class="common_right_r"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="common_left">电话：</td>
+                                            <td class="common_right_l"></td>
+                                            <td class="common_left">最近下单时间：</td>
+                                            <td class="common_right_r"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="member_wth_12">
+                <div class="col-sm-6 col-md-6 chart-box-allfixed member_bjbs">
+                    <div class="hei350 " id="memberloginbar"></div>
+                </div>
+                <div class="col-sm-6 col-md-6 chart-box-rightfixed ">
+                    <div  class="hei350 member_bjbs" id="memberacctrack">
+
+                    </div>
+                </div>
+            </div>
+            <div class="member_wth_12 ">
+                <div class="col-sm-6 col-md-6 chart-box-allfixed">
+                    <div class="hei350 member_bjbs" id="monthly">
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-6 chart-box-rightfixed">
+                    <div class="hei350 member_bjbs" id="types">
+                        <!--types-->
+                    </div>
+                </div>
+            </div>
+            <div class="member_wth_12 ">
+                <div class="col-sm-6 col-md-6 chart-box-allfixed">
+                    <div class="hei350 member_bjbs"  id="worlds">
+                        <!--worlds-->
+
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-6 chart-box-rightfixed">
+
+                    <div class="hei350 member_bjbs" id="radar">
+                      <!--   radar -->
+
+                    </div>
+                </div>
+            </div>
+            <div class="member_wth_12 ">
+                <div class="col-sm-12 col-md-12 chart-box-allfixed">
+                    <div class="hei350 member_bjbs" id="mapes" >
+                        <!--Map-->
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<script id="baseInfo-template" type="text/x-handlebars-template">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tbody>
+        <tr>
+            <td class="common_left">会员ID：</td>
+            <td class="common_right_l">{{user_id}}</td>
+            <td class="common_left">地理(省市)：</td>
+            <td class="common_right_r">{{province}} {{city}}</td>
+        </tr>
+        <tr>
+            <td class="common_left">名称：</td>
+            <td class="common_right_l">{{user_nm}}</td>
+            <td class="common_left">所属行业：</td>
+            <td class="common_right_r">{{indry}}</td>
+        </tr>
+        <tr>
+            <td class="common_left">email：</td>
+            <td class="common_right_l">{{email}}</td>
+            <td class="common_left">最近登录时间：</td>
+            <td class="common_right_r">{{last_login}}</td>
+        </tr>
+        <tr>
+            <td class="common_left">电话：</td>
+            <td class="common_right_l">{{phone}}</td>
+            <td class="common_left">最近下单时间：</td>
+            <td class="common_right_r">{{last_order}}</td>
+        </tr>
+        </tbody>
+    </table>
+</script>
+
+<script id="detailInfo-template" type="text/x-handlebars-template">
+    <div class="resume_div_wrap">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="common_box" id="baseInfo">
+            <tbody>
+            <tr>
+                <td class="gap_between_tit"></td>
+            </tr>
+            <tr>
+                <td class="common_tit">用户基本信息</td>
+            </tr>
+            <tr>
+                <td class="common_con">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tbody>
+                        <tr>
+                            <td class="common_left">会员ID：</td>
+                            <td class="common_right_l">{{user_id}}</td>
+                            <td class="common_left">名称：</td>
+                            <td class="common_right_r">{{user_nm1}}</td>
+                        </tr>
+                        <tr>
+                            <td class="common_left">性别：</td>
+                            <td class="common_right_l">{{sex1}}</td>
+                            <td class="common_left">出生日期：</td>
+                            <td class="common_right_r">{{birth_dt1}}</td>
+                        </tr>
+                        <tr>
+                            <td class="common_left">省份：</td>
+                            <td class="common_right_l">{{pro_nm1}}</td>
+                            <td class="common_left">城市：</td>
+                            <td class="common_right_r">{{city_nm1}}</td>
+                        </tr>
+                        <tr>
+                            <td class="common_left">电话区号：</td>
+                            <td class="common_right_l">{{area_cd1}}</td>
+                            <td class="common_left">电话号码：</td>
+                            <td class="common_right_r">{{tel_no1}}</td>
+                        </tr>
+                        <tr>
+                            <td class="common_left">手机号码：</td>
+                            <td class="common_right_l">{{phone1}}</td>
+                            <td class="common_left">联系邮箱：</td>
+                            <td class="common_right_l"><a class="hyperlinks" href="{{email}}">{{email1}}</a></td>
+                        </tr>
+                        <tr>
+                            <td class="common_left">个人认证标志：</td>
+                            <td class="common_right_l">{{auth_Ind1}}</td>
+                            <td class="common_left">企业会员标志：</td>
+                            <td class="common_right_r">{{ent_mem_Ind1}}</td>
+                        </tr>
+                        <tr>
+                            <td class="common_left">注册时间：</td>
+                            <td class="common_right_l">{{register_tm1}}</td>
+                            <td class="common_left">注册IP：</td>
+                            <td class="common_right_r">{{register_ip1}}</td>
+                        </tr>
+                        <tr>
+                            <td class="common_left">注册来源：</td>
+                            <td class="common_right_l">{{register_source1}}</td>
+                            <td class="common_left">验证方式：</td>
+                            <td class="common_right_r">{{auth_method1}}</td>
+                        </tr>
+                        <tr>
+                            <td class="common_left">验证帐号：</td>
+                            <td class="common_right" colspan="3">{{auth_account1}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</script>
+</body>
+</html>
+
+<script src="/anaweb/js/echarts/v3.3.0/echarts.min.js" type="text/javascript"></script>
+<script src="/anaweb/js/echarts/extension/echarts-wordcloud.min.js" type="text/javascript"></script>
+<script src="/anaweb/js/echarts/map/china.js" type="text/javascript"></script>
+<script src="/anaweb/js/member.js" type="text/javascript"></script>

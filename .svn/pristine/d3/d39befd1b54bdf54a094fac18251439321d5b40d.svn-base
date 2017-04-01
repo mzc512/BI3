@@ -1,0 +1,62 @@
+{
+    "systemkey": "BI",
+    "log4js": {
+        "filename": "/opt/logs/bi-report/access.log",
+        "maxLogSize": 104857600
+    },
+    "port": 8000,
+    "mysql": {
+        "host": "192.168.0.5",
+        "user": "logana",
+        "password": "123",
+        "database": "csc_anasys",
+        "multipleStatements": true,
+        "connectTimeout": 28800,
+        "connectionLimit": 50
+    },
+    "redis": {
+        "host": "192.168.0.13",
+        "port": "6379",
+        "password": "123456"
+    },
+    "sessionStore": {
+        "host": "192.168.0.13",
+        "port": "6379",
+        "pass": "123456",
+        "db": 1,
+        "ttl": 1800,
+        "logErrors": true
+    },
+    "cookie": {
+        "maxAge": 1800000
+    },
+    "cas_server": {
+        "hostname": "192.168.0.13",
+        "port": 3000,
+        "client": {
+            "Referer": "BI",
+            "User-Agent": "BI client"
+        },
+        "url": {
+                  "login" : "/service/sso/login",
+                  "loginout" : "/service/sso/loginout",
+                  "checkloginstate" : "/service/sso/checkloginstate",
+                  "modifpwd" : "/service/uuc/modifyPwd",
+                  "getUserBaseInfo" : "/service/uuc/getUserBaseInfo",
+                  "getTopMenu" : "/service/purview/firstMenu",
+                  "getLeftMenu" : "/service/purview/getMenu",
+                  "getPurviewMenuUrl" : "/service/purview/getPreventMenuUrl",
+                  "getUserSetting" : "/service/userSetting/query",
+                  "refreshUserSetting":"/service/userSetting/refresh"
+        }
+    },
+    "websocket": {
+        "hostname": "192.168.0.17",
+        "port": 7777
+    },
+    "redisKeyPrefix": {
+        "systemPurviewCacheRefreshTime": "systemPurviewCacheRefreshTime",
+        "purviewMenuUrlKey": "purviewMenuUrl",
+        "leftMenuKey": "leftMenu"
+    }
+}

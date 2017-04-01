@@ -1,0 +1,580 @@
+@charset "utf-8";
+/* CSS Document */
+html {
+    overflow: hidden
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    font-family: "Hiragino Sans GB", "Microsoft Yahei", Arial, sans-serif;
+    font-size: 16px
+}
+
+ul, li {
+    list-style: none;
+    padding: 0;
+    margin: 0
+}
+
+a {
+    text-decoration: none !important;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
+}
+
+.nav-top {
+    width: 100%;
+    height: 50px;
+    background: #2e2e2e;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+}
+
+.nav-top .system-name {
+    margin-left: 8px;
+    background-image: url(/anaweb/images/bi_logo3.png);
+    width: 179px;
+    margin-top: 2px;
+    height: 45px;
+}
+
+.nav-top .top-tab span {
+    float: left;
+    display: block;
+    font-family: Microsoft Yahei;
+    font-size: 2rem;
+    width: 100px;
+    text-align: center;
+}
+.nav-top span {
+    float: left;
+    display: block;
+    font-family: Microsoft Yahei;
+    font-size: 2rem;
+    width: 80px;
+    text-align: center;
+}
+
+.nav-top .bi-nav {
+    font-size: 1.2rem;
+    position: relative;
+}
+
+.nav-top .bi-nav .active {
+    border-top: solid 4px #fd7855;
+    color: #fd7855;
+    background: #393b3a;
+}
+
+.nav-top .bi-nav .active:after {
+    content: '\00a0';
+    border-color: #393b3a transparent transparent transparent;
+    border-width: 10px;
+    border-style: solid;
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: 39px;
+    bottom: -14px;
+}
+
+.nav-top .bi-nav a {
+    color: #bdbdbd;
+    border-top: solid 4px #343342;
+    line-height: 46px;
+    display: inline-block;
+    font-size: 1.6rem;
+    width: 100%;
+    border-left: solid 1px #252525;
+    border-right: solid 1px #3e4146;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.nav-top span a {
+    color: #6a6a6a;
+}
+
+.nav-top .nav-topright {
+    float: right;
+    border-top: solid 4px transparent;
+}
+
+.nav-top .nav-topright .triangle_border {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    padding: 0 20px;
+    height: 46px;
+}
+
+.nav-top .nav-topright .triangle_border:hover {
+    background-color: #393b3a;
+}
+
+.nav-top .nav-topright .triangle_border i {
+    width: 30px;
+    height: 30px;
+    background: url(/anaweb/images/setting.png);
+    display: inline-block;
+    margin-top: 7px;
+    cursor: pointer;
+}
+
+.nav-top .nav-topright .triangle_border a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav-top .nav-topright .dropdown-menu-header a {
+    line-height: 30px;
+    min-width: 80px;
+    width: 100%;
+    margin-right: 0px;
+    text-align: center;
+    margin-left: 0px;
+    color: #bdbdbd;
+    display: block;
+}
+.nav-top .nav-topright .dropdown-menu-header a:hover {
+    background-color: #fd7855;
+    color: #fff;
+}
+
+
+
+.nav-top .nav-topright .triangle_border .popup {
+    display: none;
+    width: 100px;
+    position: absolute;
+    top: 46px;
+    left: -27px;
+    z-index: 1;
+}
+
+/*.nav-top .nav-topright .triangle_border .popup span {*/
+    /*display: block;*/
+    /*width: 0;*/
+    /*height: 0;*/
+    /*border-width: 0 10px 10px;*/
+    /*border-style: solid;*/
+    /*border-color: transparent transparent #fff;*/
+    /*position: absolute;*/
+    /*top: -10px;*/
+    /*left: 50%; /!* 三角形居中显示 *!/*/
+    /*margin-left: -10px; /!* 三角形居中显示 *!/*/
+/*}*/
+
+/*.nav-top .nav-topright .triangle_border .popup em {*/
+    /*display: block;*/
+    /*width: 0;*/
+    /*height: 0;*/
+    /*border-width: 0 10px 10px;*/
+    /*border-style: solid;*/
+    /*border-color: transparent transparent #fff;*/
+    /*position: absolute;*/
+    /*top: 1px;*/
+    /*left: -10px;*/
+/*}*/
+
+.dropdown-menu-header {
+    top: 0;
+    position: absolute;
+    left: 0;
+    min-width: 98px;
+    font-size: 1.5rem;
+    text-align: left;
+    list-style: none;
+    background: #393b3a;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+
+.nav-top .nav-topright .setting {
+    line-height: 70px;
+}
+
+.nav-top .nav-topright .setting i {
+    font-size: 2rem;
+}
+
+.nav-top .nav-topright p {
+    float: left;
+    height: 65px;
+    line-height: 65px;
+    padding: 0;
+    margin: 0;
+    display: block;
+    margin-right: 50px
+}
+
+.nav-top .nav-topright .user-info {
+    display: inline-block;
+    color: #bdbdbd;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 46px;
+    float: right;
+    font-size: 1.6rem;
+    text-align: left;
+    min-width: 90px;
+    max-width: 200px;
+}
+
+.nav-down .arrow {
+    width: 52px;
+    height: 46px;
+    background-color: #65cea7;
+    cursor: pointer;
+    position: absolute;
+}
+
+.nav-down .arrow img {
+    margin-left: 10px;
+    margin-top: 7px
+}
+
+.leftmenu1 {
+    float: left;
+    width: 160px;
+    background: #2e2e2e;
+    height: 770px;
+    position: absolute;
+    left: 0;
+    z-index: 1;
+    outline: none;
+    /*overflow-y: scroll;*/
+    /*overflow-x: hidden;*/
+}
+
+.leftmenu1 .menu-oc {
+    left: 160px;
+}
+
+.leftmenu1 ul {
+    float: left;
+    width: 160px;
+    height: auto;
+}
+
+.leftmenu1 ul li {
+    width: 160px;
+    float: left;
+    height: auto;
+    position: relative
+}
+
+.leftmenu1 ul li a {
+    width: 160px;
+    float: left;
+    display: block;
+    line-height: 40px;
+    font-size: 1.3rem;
+    text-indent: 4rem;
+    cursor: pointer;
+}
+
+.leftmenu1 ul li a.a_list1 {
+    background: url(/anaweb/images/menu/order-icon.png) no-repeat 15px center;
+    background-size: 17px;
+}
+.leftmenu1 ul li a.a_list1.active_alist {
+    background: url(/anaweb/images/menu/order-active-icon.png) no-repeat 15px center;
+    background-size: 17px;
+}
+.leftmenu1 ul li a.a_list2 {
+    background: url(/anaweb/images/menu/product-icon.png) no-repeat 15px center;
+    background-size: 17px;
+}
+.leftmenu1 ul li a.a_list2.active_alist {
+    background: url(/anaweb/images/menu/product-active-icon.png) no-repeat 15px center;
+    background-size: 17px;
+}
+
+.leftmenu1 ul li a.a_list3 {
+    background: url(/anaweb/images/menu/user-icon.png) no-repeat 15px center;
+    background-size: 17px;
+}
+.leftmenu1 ul li a.a_list3.active_alist {
+    background: url(/anaweb/images/menu/user-active-icon.png) no-repeat 15px center;
+    background-size: 17px;
+}
+
+.leftmenu1 ul li a.a_list4 {
+    background: url(/anaweb/images/menu/flow-icon.png) no-repeat 15px center;
+    background-size: 17px;
+}
+.leftmenu1 ul li a.a_list4.active_alist {
+    background: url(/anaweb/images/menu/flow-active-icon.png) no-repeat 15px center;
+    background-size: 17px;
+}
+
+.leftmenu1 ul li a.a_list {
+    color: #d1d2d4;
+    border-bottom: solid 1px #202020;
+    border-top: solid 1px #393a3e;
+    font-size: 1.6rem;
+}
+.leftmenu1 ul li a.active_alist {
+    background-color: #36353a;
+    color:#00cf9b;
+}
+
+
+.leftmenu1 ul li .menu_list {
+    width: 160px;
+    height: auto;
+    float: left;
+    font-size: 14px;
+    background: #36353a;
+
+}
+
+.leftmenu1 ul li .menu_list a {
+    width: 160px;
+    float: left;
+    line-height: 40px;
+    text-indent: 1.8em;
+    color: #7e7e80;
+    display: block;
+    border-left: solid 4px #36353a;
+    position: relative;
+}
+
+.leftmenu1 ul li .menu_list a:hover {
+    color:#31c193;
+    text-decoration: none;
+}
+
+.leftmenu1 ul li .menu_list a.active-menu {
+    text-decoration: none;
+    color: #00cf9b;
+    border-left: solid 4px #00cf9b;
+}
+.leftmenu1 ul li .menu_list a.active-menu:after {
+    content:'\00a0';
+    border-color:  transparent  #fff transparent transparent;
+    border-width: 10px;
+    border-style: solid;
+    width: 0;
+    height: 0;
+    position: absolute;
+    right: 0;
+    top:9px;
+}
+
+
+.rightcon {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 160px;
+}
+
+.rightcon iframe {
+    width: 100%;
+    height: 100%;
+}
+
+/*main*/
+.main {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+    padding-top: 50px;
+}
+.main-fullscreen-status{
+    padding-top: 0;
+}
+
+.menu-hander {
+    position: absolute;
+    left: 0px;
+    top: 0;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    background: #3fbbe1;
+    text-align: center;
+    z-index: 2;
+    cursor: pointer;
+    color: #fff;
+    font-size: 2rem;
+}
+
+
+
+.top-tab {
+    display: inline-block;
+    float: right;
+}
+.jspVerticalBar {
+    width: 9px;
+    border-radius: 5px;
+}
+.jspDrag {
+    border-radius: 5px;
+}
+.jspTrack{
+    border-radius: 5px;
+}
+
+.jspHorizontalBar{
+    display: none;
+}
+
+.resume_div_wraphidx{
+    overflow:auto;
+}
+.resume_div_wrap {
+    text-align: left;
+    font-family: Arial, "\5b8b\4f53";
+    font-size: 12px;
+    line-height: 22px;
+    color: #333;
+    margin: 0 auto;
+    overflow: hidden;
+    word-break: normal;
+    word-wrap: break-word;
+    padding-bottom: 8px;
+}
+
+.resume_div_wrap table, .resume_div_wrap td {
+    font-family: Arial, "\5b8b\4f53";
+    font-size: 12px;
+    line-height: 22px;
+    color: #333;
+}
+
+.resume_div_wrap td.common_left {
+    width: 8%;
+    text-align: right;
+    color: #666;
+    white-space: nowrap;
+}
+.common_right_r {
+    width: 43%;
+}
+
+.common_con {
+    padding: 15px 25px 0;
+}
+.common_con1 {
+    padding: 15px 0px 0;
+}
+.common_con1 tr{
+    height:35px;
+    line-height:35px;
+}
+.resume_div_wrap table.common_tab{
+    margin-top:30px;
+    font-size: 30px;
+    border-collapse:collapse;
+    border:1px solid #a0c6e5;
+}
+.resume_div_wrap table.common_tabtr td{
+    font-size: 14px;
+}
+.resume_div_wrap table.common_tab1 tr td{
+    font-size: 14px;
+}
+.resume_div_wrap td.common_tit ,.common_tit {
+    background: #fafafa;
+    color: #fd7855;
+    padding: 0 8px;
+    height: 20px;
+    border: solid 1px #e4e4e4;
+}
+
+.resume_div_wrap td.common_titty{
+    height:30px;
+    line-height:30px;
+    font-size: 14px;
+}
+
+.common_tit {
+    cursor: pointer;
+    height: 24px;
+}
+
+.hyperlinks, .hyperlinks:link, .hyperlinks:visited, .hyperlinks:active {
+    color: #333;
+    text-decoration: none;
+}
+.black-screen-shade{
+    background: #000000;
+    opacity: 0.8;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+.pop-chart-wrap{
+    position: fixed;
+    background-color: #fff;
+    z-index: 2;
+    border: solid 1px #5e5e5e;
+    top: 10%;
+    left: 50%;
+    width: 90%;
+    margin-left: -45%;
+    border-radius: 6px;
+}
+.pop-chart-wrap .close-btn{
+    position: absolute;
+    top: 12px;
+    right: 4px;
+    text-align: center;
+    font-size: 4rem;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    font-weight: normal;
+    cursor: pointer;
+    color: #5e5e5e;
+}
+
+.pop-chart-wrap .modal-header{
+    background: #eee;
+    font-weight: bold;
+    font-size: 15px;
+}
+.pop-chart-wrap .modal-header .title{
+    height: 28px;
+    display: block;
+}
+
+.pop-chart-wrap .pop-chart{
+    width: 100%;
+    overflow-y: auto;
+}
